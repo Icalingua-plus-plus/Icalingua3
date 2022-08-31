@@ -1,0 +1,7 @@
+{
+  "name": "@icalingua/utils",
+  "private": true,
+  "description": "Public utilities of icalingua",
+  "version": "0.0.0",
+  "type": "module"
+}

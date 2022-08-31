@@ -1,0 +1,5 @@
+node_modules
+.yarn
+.eslintrc.js
+vite.config.ts
+dist

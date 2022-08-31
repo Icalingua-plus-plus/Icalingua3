@@ -1,0 +1,30 @@
+{
+  "name": "@icalingua/backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node ./src/index.ts",
+    "keyctl": "ts-node ./src/keyctl.ts"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "AGPL-3.0-or-later",
+  "devDependencies": {
+    "@types/inquirer": "^9.0.1",
+    "@types/node": "^18.7.8",
+    "@types/node-notifier": "^8.0.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@fastify/static": "^6.5.0",
+    "fastify": "^4.5.3",
+    "fastify-socket.io": "^4.0.0",
+    "inquirer": "^9.1.0",
+    "notify-win-rs": "^0.2.0",
+    "powertoast": "^2.1.5",
+    "socket.io": "^4.5.1"
+  }
+}
