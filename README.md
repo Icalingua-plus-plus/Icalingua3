@@ -17,3 +17,7 @@ git clone https://github.com/Icalingua-plus-plus/Icalingua3
 pnpm i # 需要 Node.js 16 或以上，并且启用 corepack
 pnpm dev # 这条命令会同时启动前后端
 ```
+
+## 关于官方可能的 Electron 版本
+
+在官方可能的 Electron 版本功能和支持的平台种类超过 Icalingua 之前，本 repo 会保持更新。
