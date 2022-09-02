@@ -21,7 +21,7 @@ server.ready().then(() => {
   server.io.on('connection', async (socket) => {
     let valid = false;
     const challenge = Date.now().toString();
-    socket.emit('challange', challenge);
+    socket.emit('challenge', challenge);
     socket.once('verify', async (signature) => {
       if (await verifyClient(signature, challenge)) {
         valid = true;

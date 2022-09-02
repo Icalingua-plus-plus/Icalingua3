@@ -2,7 +2,7 @@ import { DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent } from 'oic
 
 export interface ServerToClientEvents {
   newMessage: (message: GroupMessageEvent | PrivateMessageEvent | DiscussMessageEvent) => void;
-  challange: (challange: string) => void;
+  challenge: (challange: string) => void;
 }
 
 export interface ClientToServerEvents {

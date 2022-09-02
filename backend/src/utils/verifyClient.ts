@@ -7,7 +7,7 @@ const verifyClient = async (signature: Uint8Array, challange: string) => {
   const textEncoder = new TextEncoder();
   const res = await crypto.webcrypto.subtle.verify(
     { name: 'ECDSA', hash: { name: 'SHA-512' } },
-    publicKey as crypto.webcrypto.CryptoKey,
+    publicKey,
     signature,
     textEncoder.encode(challange),
   );

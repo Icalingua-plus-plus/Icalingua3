@@ -16,14 +16,7 @@ const getKey = async () => {
       publicKey: crypto.webcrypto.JsonWebKey;
       privateKey: crypto.webcrypto.JsonWebKey;
     } = JSON.parse(keyPairStr);
-    await Promise.all([
-      crypto.webcrypto.subtle.importKey(
-        'jwk',
-        keyPair.privateKey,
-        { name: 'ECDSA', namedCurve: 'P-521' },
-        true,
-        ['sign'],
-      ),
+    const [publicKey, privateKey] = await Promise.all([
       crypto.webcrypto.subtle.importKey(
         'jwk',
         keyPair.publicKey,
@@ -31,8 +24,15 @@ const getKey = async () => {
         true,
         ['verify'],
       ),
+      crypto.webcrypto.subtle.importKey(
+        'jwk',
+        keyPair.privateKey,
+        { name: 'ECDSA', namedCurve: 'P-521' },
+        true,
+        ['sign'],
+      ),
     ]);
-    return keyPair;
+    return { publicKey, privateKey };
   } catch (e) {
     console.error('Your key pair is invalid, please regenerate one.');
     return process.exit(1);

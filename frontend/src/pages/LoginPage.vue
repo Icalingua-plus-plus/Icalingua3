@@ -15,13 +15,27 @@
   </main>
 </template>
 <script setup lang="ts">
+import type { ClientToServerEvents, ServerToClientEvents } from '@icalingua/types/socketIoTypes';
+import { io, Socket } from 'socket.io-client';
 import { reactive } from 'vue';
+import signChallenge from '../utils/signChallenge';
 
 const formValue = reactive({
   address: '',
   key: '',
 });
-const handleClick = (e: MouseEvent) => {
+const handleClick = async (e: MouseEvent) => {
   e.preventDefault();
+  const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(formValue.address, {
+    transports: ['websocket'],
+  });
+  socket.once('challenge', async (ev) => {
+    const signature = await signChallenge(ev, formValue.key);
+    console.log(signature);
+    socket.emit('verify', signature);
+  });
+  socket.on('newMessage', (ev) => {
+    console.log(ev);
+  });
 };
 </script>

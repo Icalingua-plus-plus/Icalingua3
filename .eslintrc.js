@@ -36,12 +36,10 @@ module.exports = {
       { packageDir: ['./', './frontend', './backend'] },
     ],
   },
-  parser: 'vue-eslint-parser',
   parserOptions: {
     project: './tsconfig.eslint.json',
     extraFileExtensions: ['.vue'],
     parser: '@typescript-eslint/parser',
-    sourceType: 'module',
     ecmaFeatures: { jsx: true },
   },
 };
