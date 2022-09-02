@@ -1,8 +1,6 @@
 const signChallenge = async (challenge: string, key: string) => {
   const textEncoder = new TextEncoder();
   const jwk = JSON.parse(key) as JsonWebKey;
-  console.log(jwk);
-  
   const privateKey = await crypto.subtle.importKey(
     'jwk',
     jwk,

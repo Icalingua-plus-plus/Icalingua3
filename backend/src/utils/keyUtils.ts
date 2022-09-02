@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
+import logger from './logger.js';
 import { keyPairPath } from './pathUtils.js';
 
 const getKey = async () => {
@@ -7,9 +8,9 @@ const getKey = async () => {
   try {
     keyPairStr = (await fs.readFile(keyPairPath)).toString();
   } catch (e) {
-    console.error('Key pair not found. Please generate it first.');
-    console.log('Use `pnpm keyctl` and follow the guide to generate a new key pair.');
-    return process.exit(1);
+    logger.error('Key pair not found. Please generate it first.');
+    logger.info('Use `pnpm keyctl` and follow the guide to generate a new key pair.');
+    throw new Error('Key pair not found. Please generate it first.');
   }
   try {
     const keyPair: {
@@ -34,8 +35,8 @@ const getKey = async () => {
     ]);
     return { publicKey, privateKey };
   } catch (e) {
-    console.error('Your key pair is invalid, please regenerate one.');
-    return process.exit(1);
+    logger.error('Your key pair is invalid, please regenerate one.');
+    throw new Error('Your key pair is invalid, please regenerate one.');
   }
 };
 

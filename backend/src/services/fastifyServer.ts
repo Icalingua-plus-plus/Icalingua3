@@ -1,9 +1,10 @@
-import fastifyIO from 'fastify-socket.io';
 import fastifyStatic from '@fastify/static';
-import { fastify } from 'fastify';
+import { fastify, FastifyBaseLogger } from 'fastify';
+import fastifyIO from 'fastify-socket.io';
+import logger from '../utils/logger.js';
 import { staticPath } from '../utils/pathUtils.js';
 
-const server = fastify({ logger: true });
+const server = fastify({ logger: logger as unknown as FastifyBaseLogger });
 server.register(fastifyIO.default, {
   cors: { origin: '*' },
 });

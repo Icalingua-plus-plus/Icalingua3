@@ -10,14 +10,10 @@
         />
       </label>
       <label class="flex items-center gap-2" for="key">
-        密钥<textarea
-          id="key"
-          v-model="formValue.key"
-          class="p-2 flex-grow border-2 rounded outline-none"
-        />
+        密钥<textarea id="key" v-model="formValue.key" class="p-2 flex-grow border-2 rounded" />
       </label>
       <div class="flex justify-center">
-        <button class="px-2 py-1 border-2 rounded outline-none" @click="handleClick">登录</button>
+        <button class="px-2 py-1 border-2 rounded" @click="handleClick">登录</button>
       </div>
     </form>
   </main>
