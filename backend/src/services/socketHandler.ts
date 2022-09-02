@@ -4,22 +4,11 @@ import type {
   ServerToClientEvents,
   SocketData,
 } from '@icalingua/types/socketIoTypes.js';
-import { fastify } from 'fastify';
-import fastifyIO from 'fastify-socket.io';
-import fastifyStatic from '@fastify/static';
+import { setTimeout } from 'node:timers/promises';
 import type { Socket } from 'socket.io';
+import verifyClient from '../utils/verifyClient.js';
+import server from './fastifyServer.js';
 import messageHandler from './messageHandler.js';
-import { staticPath } from '../utils/pathUtils.js';
-
-const server = fastify({ logger: true });
-server.register(fastifyStatic, { root: staticPath });
-server.register(fastifyIO.default, {
-  cors: { origin: '*' },
-});
-server.listen({ port: 3000 }).catch((e) => {
-  server.log.error(e);
-  process.exit(1);
-});
 
 const socketPool: Socket<
   ClientToServerEvents,
@@ -29,8 +18,18 @@ const socketPool: Socket<
 >[] = [];
 
 server.ready().then(() => {
-  server.io.on('connection', (socket) => {
-    socketPool.push(socket);
+  server.io.on('connection', async (socket) => {
+    let valid = false;
+    const challenge = Date.now().toString();
+    socket.emit('challange', challenge);
+    socket.once('verify', async (signature) => {
+      if (await verifyClient(signature, challenge)) {
+        valid = true;
+        socketPool.push(socket);
+      }
+    });
+    await setTimeout(10000);
+    if (!valid) socket.disconnect();
   });
 });
 

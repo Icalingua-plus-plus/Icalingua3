@@ -5,8 +5,9 @@ module.exports = {
     'prettier',
     'plugin:vue/vue3-recommended',
     'plugin:import/typescript',
+    'plugin:vuejs-accessibility/recommended',
   ],
-  plugins: ['@typescript-eslint', 'prettier', 'vue'],
+  plugins: ['@typescript-eslint', 'prettier', 'vue', 'vuejs-accessibility'],
   env: {
     // 你的环境变量（包含多个预定义的全局变量）
     //
@@ -35,9 +36,12 @@ module.exports = {
       { packageDir: ['./', './frontend', './backend'] },
     ],
   },
+  parser: 'vue-eslint-parser',
   parserOptions: {
     project: './tsconfig.eslint.json',
     extraFileExtensions: ['.vue'],
     parser: '@typescript-eslint/parser',
+    sourceType: 'module',
+    ecmaFeatures: { jsx: true },
   },
 };
