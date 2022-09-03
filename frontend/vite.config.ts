@@ -1,14 +1,7 @@
-import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import {
-  presetWind,
-  presetAttributify,
-  presetWebFonts,
-  transformerDirectives,
-  transformerVariantGroup,
-} from 'unocss';
 import { setDefaultResultOrder } from 'node:dns';
-import Unocss from 'unocss/vite';
+import { defineConfig } from 'vite';
+import WindiCSS from 'vite-plugin-windicss';
 
 setDefaultResultOrder('verbatim');
 const target = ['chrome87', 'edge88', 'es2020', 'firefox78', 'safari14'];
@@ -17,9 +10,9 @@ const target = ['chrome87', 'edge88', 'es2020', 'firefox78', 'safari14'];
 export default defineConfig({
   plugins: [
     vue(),
-    Unocss({
-      presets: [presetWind(), presetAttributify({ prefix: 'w:' }), presetWebFonts()],
-      transformers: [transformerDirectives(), transformerVariantGroup()],
+    WindiCSS({
+      // 这个放在项目根目录是为了让 VSCode 插件能正常使用
+      configFiles: ['./windi.config.ts'],
     }),
   ],
   server: {

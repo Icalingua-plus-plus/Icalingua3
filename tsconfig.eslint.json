@@ -9,6 +9,7 @@
     // whatever paths you intend to lint
     "frontend",
     "backend",
-    "packages/**/*"
+    "packages/**/*",
+    "windi.config.ts"
   ]
 }
