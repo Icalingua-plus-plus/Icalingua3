@@ -1,15 +1,9 @@
-import {
-  DiscussMessageEvent,
-  GroupMessage,
-  GroupMessageEvent,
-  PrivateMessage,
-  PrivateMessageEvent,
-} from 'oicq';
+import { GroupMessage, PrivateMessage } from 'oicq';
 import toast, { remove } from 'powertoast';
-import { Observable } from 'rxjs';
 import { setTimeout } from 'timers/promises';
 import oicqClient from '../instances/oicqClient.js';
 import settings from '../settings.js';
+import logger from '../utils/logger.js';
 
 oicqClient
   .on('system.login.slider', () => {
@@ -18,18 +12,13 @@ oicqClient
     });
   })
   .login(settings.password);
-oicqClient.on('system.online', () => {
-  console.log('logged in');
+
+oicqClient.onSystemOnline.forEach(() => {
+  logger.info('oicq logged in');
   oicqClient.emit('sync.message');
 });
 
-const onMessage = new Observable<PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent>(
-  (subscriber) => {
-    oicqClient.on('message', (e) => subscriber.next(e));
-  },
-);
-
-onMessage.forEach(async (e) => {
+oicqClient.onMessage.forEach(async (e) => {
   if (!settings.toast) return;
   let group;
   let attribution;
@@ -55,8 +44,6 @@ onMessage.forEach(async (e) => {
     await setTimeout(60000);
     await remove('Microsoft.WindowsStore_8wekyb3d8bbwe!App', uniqueID);
   } catch (err) {
-    console.error(err);
+    logger.error(err);
   }
 });
-
-export default onMessage;

@@ -7,7 +7,7 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:vuejs-accessibility/recommended',
   ],
-  plugins: ['@typescript-eslint', 'prettier', 'vue', 'vuejs-accessibility'],
+  plugins: ['@typescript-eslint', 'prettier', 'vue', 'vuejs-accessibility', 'jsdoc'],
   env: {
     // 你的环境变量（包含多个预定义的全局变量）
     //
@@ -34,6 +34,19 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       { packageDir: ['./', './frontend', './backend'] },
+    ],
+    'jsdoc/require-jsdoc': [
+      'error',
+      {
+        require: {
+          ArrowFunctionExpression: true,
+          ClassDeclaration: true,
+          ClassExpression: true,
+          FunctionDeclaration: true,
+          MethodDefinition: true,
+        },
+        checkConstructors: false,
+      },
     ],
   },
   parserOptions: {

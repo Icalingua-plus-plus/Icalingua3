@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "seatonjiang.gitmoji-vscode",
+    "esbenp.prettier-vscode",
+    "vue.volar",
+    "voorjaar.windicss-intellisense"
+  ]
+}

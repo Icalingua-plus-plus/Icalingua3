@@ -7,9 +7,9 @@ import type {
 import crypto from 'node:crypto';
 import { setTimeout } from 'node:timers/promises';
 import type { Socket } from 'socket.io';
+import oicqClient from '../instances/oicqClient.js';
 import verifyClient from '../utils/verifyClient.js';
 import server from './fastifyServer.js';
-import messageHandler from './messageHandler.js';
 
 // eslint-disable-next-line import/no-mutable-exports
 let socketPool: {
@@ -37,7 +37,7 @@ server.ready().then(() => {
   });
 });
 
-messageHandler.forEach((e) => {
+oicqClient.onMessage.forEach((e) => {
   socketPool.forEach((item) => {
     item.socket.emit('newMessage', e);
   });

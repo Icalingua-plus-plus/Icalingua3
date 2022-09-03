@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import LoginPage from './pages/LoginPage.vue';
 
-const LoginPage = () => import('./pages/LoginPage.vue');
-
-const routes: RouteRecordRaw[] = [{ path: '/login', component: LoginPage }];
+const routes: RouteRecordRaw[] = [{ path: '/', component: LoginPage }];
 
 const router = createRouter({ history: createWebHistory(), routes });
 

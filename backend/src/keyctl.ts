@@ -3,9 +3,11 @@ import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import { keyPairPath } from './utils/pathUtils.js';
 
+/** 输出私钥 */
 const logPrivKey = (privateKey: crypto.webcrypto.JsonWebKey) =>
   console.log('Your private key is:\n', JSON.stringify(privateKey));
 
+/** 生成密钥对 */
 const genKey = async () => {
   let existKeyPair;
   try {
@@ -39,6 +41,7 @@ const genKey = async () => {
   logPrivKey(privateKey);
 };
 
+/** 查看私钥 */
 const viewKey = async () => {
   let keyPairStr;
   try {

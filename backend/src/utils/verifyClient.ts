@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import { TextEncoder } from 'node:util';
 import keyUtils from './keyUtils.js';
 
+/** 验证客户端 */
 const verifyClient = async (signature: Uint8Array, challange: string) => {
   const { publicKey } = await keyUtils.getKey();
   const textEncoder = new TextEncoder();

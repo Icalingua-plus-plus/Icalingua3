@@ -12,8 +12,10 @@ const { combine, timestamp, label, printf, splat } = winston.format;
 type TLevel = 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly';
 type THTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
+/** 格式化日期 */
 const formatDate = (dateStr: string) => format(new Date(dateStr), 'MM-dd HH:mm:ss');
 
+/** 获取各 log level 的颜色 */
 const getLevelColor = (level: TLevel) => {
   switch (level) {
     case 'error':
@@ -35,6 +37,7 @@ const getLevelColor = (level: TLevel) => {
   }
 };
 
+/** 获取各 HTTP 请求方法的颜色 */
 const getMethodColor: (method: THTTPMethod) => keyof colors.Color = (method) => {
   switch (method) {
     case 'GET':

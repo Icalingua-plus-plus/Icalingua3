@@ -1,3 +1,7 @@
+/** 用私钥对服务器发来的内容进行签名
+ * @param challenge 服务器发来的内容
+ * @param key 私钥，以 JWT 字符串的形式保存
+ */
 const signChallenge = async (challenge: string, key: string) => {
   const textEncoder = new TextEncoder();
   const jwk = JSON.parse(key) as JsonWebKey;

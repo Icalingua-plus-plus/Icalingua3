@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import logger from './logger.js';
 import { keyPairPath } from './pathUtils.js';
 
+/** 获取密钥 */
 const getKey = async () => {
   let keyPairStr;
   try {
