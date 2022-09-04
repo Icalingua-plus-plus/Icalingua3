@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 import WindiCSS from 'vite-plugin-windicss';
 
 setDefaultResultOrder('verbatim');
-const target = ['chrome87', 'edge88', 'es2020', 'firefox78', 'safari14'];
+const target = ['chrome87', 'edge88', 'firefox78', 'safari14'];
 
 // https://vitejs.dev/config/
 export default defineConfig({

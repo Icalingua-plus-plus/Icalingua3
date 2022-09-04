@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@jsonforms/core": "^3.0.0-rc.1",
+    "@jsonforms/vue": "^3.0.0-rc.1",
+    "@jsonforms/vue-vanilla": "^3.0.0-rc.1",
     "@vueuse/core": "^9.1.1",
     "socket.io-client": "^4.5.1",
     "vue": "^3.2.38",

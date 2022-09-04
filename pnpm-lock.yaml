@@ -90,6 +90,9 @@ importers:
 
   frontend:
     specifiers:
+      '@jsonforms/core': ^3.0.0-rc.1
+      '@jsonforms/vue': ^3.0.0-rc.1
+      '@jsonforms/vue-vanilla': ^3.0.0-rc.1
       '@vitejs/plugin-vue': ^3.0.3
       '@vueuse/core': ^9.1.1
       socket.io-client: ^4.5.1
@@ -100,6 +103,9 @@ importers:
       vue-router: ^4.1.5
       vue-tsc: ^0.40.5
     dependencies:
+      '@jsonforms/core': 3.0.0-rc.1
+      '@jsonforms/vue': 3.0.0-rc.1_t23pmtzliituslcbdffym74v4a
+      '@jsonforms/vue-vanilla': 3.0.0-rc.1_ule3ddi5lz6z6go4ofuxcuyh7m
       '@vueuse/core': 9.1.1_vue@3.2.38
       socket.io-client: 4.5.1
       vue: 3.2.38
@@ -277,6 +283,39 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
+  /@jsonforms/core/3.0.0-rc.1:
+    resolution: {integrity: sha512-hz2CXDVs33O5USKE2gmgJdKeHybKUThihVzyv21CZTBSWL43ByLIQmMIg+vndL3i1HM5XzQLGyZjB7GJak2wzw==}
+    dependencies:
+      '@types/json-schema': 7.0.11
+      ajv: 8.11.0
+      ajv-formats: 2.1.1
+      lodash: 4.17.21
+    dev: false
+
+  /@jsonforms/vue-vanilla/3.0.0-rc.1_ule3ddi5lz6z6go4ofuxcuyh7m:
+    resolution: {integrity: sha512-U/aCXoyOoP5BFdLCpOevZVX9TxozXTMHewWmIMwrhn4BgFU9Ch9RSqk5tzmfOpY3Jd+A706kM7tfCOjlmudJ8Q==}
+    peerDependencies:
+      '@jsonforms/core': 3.0.0-rc.1
+      '@jsonforms/vue': 3.0.0-rc.1
+      vue: ^3.2.26
+    dependencies:
+      '@jsonforms/core': 3.0.0-rc.1
+      '@jsonforms/vue': 3.0.0-rc.1_t23pmtzliituslcbdffym74v4a
+      lodash: 4.17.21
+      vue: 3.2.38
+    dev: false
+
+  /@jsonforms/vue/3.0.0-rc.1_t23pmtzliituslcbdffym74v4a:
+    resolution: {integrity: sha512-JZlZylTTxwBDHeb+l+fjdmOnxoGydvi2/ChJmki2sDV/Xnil+IpdzMKuaj5Dzup+vyOhbrecr115Sy67Ocxgkg==}
+    peerDependencies:
+      '@jsonforms/core': 3.0.0-rc.1
+      vue: ^3.2.26
+    dependencies:
+      '@jsonforms/core': 3.0.0-rc.1
+      lodash: 4.17.21
+      vue: 3.2.38
+    dev: false
+
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -339,7 +378,6 @@ packages:
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
-    dev: true
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
