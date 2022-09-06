@@ -7,21 +7,36 @@
       :renderers="renderer"
       @change="handleChange"
     />
+    <button class="border-dashed rounded-md border-2 border-green-400 p-2" @click="handleSave">
+      保存配置
+    </button>
   </AppContainer>
 </template>
 <script setup lang="ts">
-import schema from '@icalingua/types/IAppConfig';
+import schema, { IAppConfig } from '@icalingua/types/IAppConfig';
 import JsonSchema from '@icalingua/types/JsonSchema';
 import { JsonForms, JsonFormsChangeEvent } from '@jsonforms/vue';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import AppContainer from '../components/AppContainer.vue';
+import clientSocket from '../services/ClientSocket';
 
 const renderer = Object.freeze(vanillaRenderers);
-const data = ref({ qid: 0, password: '', protocol: 'iPad' });
+const data = ref<IAppConfig>({ qid: 0, password: '', protocol: 'iPad' });
+onMounted(() => {
+  clientSocket.socket!.emit('requestConfig');
+  clientSocket.socket!.once('sendConfig', (config) => {
+    data.value = config;
+  });
+});
 /** 处理表单变化 */
 const handleChange = (e: JsonFormsChangeEvent) => {
   data.value = e.data;
+};
+/** 保存配置 */
+const handleSave = (e: MouseEvent) => {
+  e.preventDefault();
+  clientSocket.socket!.emit('changeConfig', data.value);
 };
 </script>
 <style>
@@ -32,7 +47,7 @@ label.label {
   @apply text-sm;
 }
 select.select {
-  @apply p-4 border-solid rounded-md border-2 border-green-400 p-2 bg-transparent;
+  @apply bg-transparent border-solid rounded-md border-2 border-green-400 p-4 p-2;
 }
 
 .horizontal-layout {

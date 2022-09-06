@@ -1,6 +1,7 @@
 import type { IAppConfig } from '@icalingua/types/IAppConfig.js';
 import schema from '@icalingua/types/IAppConfig.js';
 import fs from 'node:fs/promises';
+import logger from '../utils/logger.js';
 import { configPath } from '../utils/pathUtils.js';
 
 /** 配置管理 */
@@ -34,8 +35,12 @@ class ConfigProvider {
 
   /** 读取配置 */
   async loadConfig() {
-    const config = await fs.readFile(configPath, 'utf-8');
-    this.config = JSON.parse(config);
+    try {
+      const config = await fs.readFile(configPath, 'utf-8');
+      this.config = JSON.parse(config);
+    } catch (e) {
+      logger.warn('Config not found. Using default config.');
+    }
   }
 }
 

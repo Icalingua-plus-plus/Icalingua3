@@ -1,0 +1,32 @@
+import type { ClientToServerEvents, ServerToClientEvents } from '@icalingua/types/socketIoTypes';
+import type { DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent } from 'oicq';
+import { Observable } from 'rxjs';
+import type { Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
+import signChallenge from '../utils/signChallenge';
+
+/** 客户端 socket 类 */
+class ClientSocket {
+  socket?: Socket<ServerToClientEvents, ClientToServerEvents>;
+
+  declare onMessage: Observable<GroupMessageEvent | PrivateMessageEvent | DiscussMessageEvent>;
+
+  /** 更新内部的 socket 对象 */
+  init(address: string, key: string) {
+    const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(address, {
+      transports: ['websocket'],
+    });
+    this.socket = socket;
+    socket.once('challenge', async (ev) => {
+      const signature = await signChallenge(ev, key);
+      socket.emit('verify', signature).emit('requestConfig');
+    });
+    this.onMessage = new Observable((subscriber) => {
+      socket.on('newMessage', subscriber.next);
+    });
+  }
+}
+
+const clientSocket = new ClientSocket();
+
+export default clientSocket;

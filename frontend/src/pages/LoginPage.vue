@@ -35,12 +35,12 @@
   </main>
 </template>
 <script setup lang="ts">
-import type { ClientToServerEvents, ServerToClientEvents } from '@icalingua/types/socketIoTypes';
 import { useStorage } from '@vueuse/core';
-import { io, Socket } from 'socket.io-client';
 import { ref } from 'vue';
-import signChallenge from '../utils/signChallenge';
+import useRR from '../hooks/useRR';
+import clientSocket from '../services/ClientSocket';
 
+const { route, router } = useRR();
 const formValue = useStorage('il-serverInfo', {
   address: '',
   key: '',
@@ -49,15 +49,10 @@ const showKey = ref(!formValue.value.key);
 /** 登录按钮点击事件 */
 const handleClick = async (e: MouseEvent) => {
   e.preventDefault();
-  const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(formValue.value.address, {
-    transports: ['websocket'],
-  });
-  socket.once('challenge', async (ev) => {
-    const signature = await signChallenge(ev, formValue.value.key);
-    socket.emit('verify', signature);
-  });
-  socket.on('newMessage', (ev) => {
+  clientSocket.init(formValue.value.address, formValue.value.key);
+  clientSocket.onMessage.subscribe((ev) => {
     console.log(ev);
   });
+  router.push((route.query.to as string) || '/config');
 };
 </script>
