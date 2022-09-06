@@ -14,6 +14,6 @@
     "rootDir": "..",
     "noEmit": true
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "settings.json"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "ts-node": { "esm": true }
 }

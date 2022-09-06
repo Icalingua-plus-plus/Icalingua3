@@ -52,6 +52,10 @@ const handleClick = async (e: MouseEvent) => {
   clientSocket.init(formValue.value.address, formValue.value.key);
   clientSocket.onMessage.subscribe((ev) => {
     console.log(ev);
+    // eslint-disable-next-line no-new
+    new Notification(ev.sender.nickname, {
+      body: ev.raw_message,
+    });
   });
   router.push((route.query.to as string) || '/config');
 };

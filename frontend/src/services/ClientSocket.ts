@@ -1,3 +1,4 @@
+import { IAppConfig } from '@icalingua/types/IAppConfig';
 import type { ClientToServerEvents, ServerToClientEvents } from '@icalingua/types/socketIoTypes';
 import type { DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent } from 'oicq';
 import { Observable } from 'rxjs';
@@ -11,6 +12,8 @@ class ClientSocket {
 
   declare onMessage: Observable<GroupMessageEvent | PrivateMessageEvent | DiscussMessageEvent>;
 
+  declare onSendConfig: Observable<IAppConfig>;
+
   /** 更新内部的 socket 对象 */
   init(address: string, key: string) {
     const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(address, {
@@ -22,7 +25,10 @@ class ClientSocket {
       socket.emit('verify', signature).emit('requestConfig');
     });
     this.onMessage = new Observable((subscriber) => {
-      socket.on('newMessage', subscriber.next);
+      socket.on('newMessage', (msg) => subscriber.next(msg));
+    });
+    this.onSendConfig = new Observable((subscriber) => {
+      socket.on('sendConfig', (cfg) => subscriber.next(cfg));
     });
   }
 }

@@ -22,10 +22,19 @@ import AppContainer from '../components/AppContainer.vue';
 import clientSocket from '../services/ClientSocket';
 
 const renderer = Object.freeze(vanillaRenderers);
-const data = ref<IAppConfig>({ qid: 0, password: '', protocol: 'iPad' });
+const data = ref<IAppConfig>(
+  (() => {
+    const tempConfig = {} as unknown as IAppConfig;
+    const keys = Object.keys(schema.properties) as unknown as (keyof typeof schema.properties)[];
+    keys.forEach((key) => {
+      tempConfig[key] = schema.properties[key].default as never;
+    });
+    return tempConfig;
+  })(),
+);
 onMounted(() => {
   clientSocket.socket!.emit('requestConfig');
-  clientSocket.socket!.once('sendConfig', (config) => {
+  clientSocket.onSendConfig.subscribe((config) => {
     data.value = config;
   });
 });

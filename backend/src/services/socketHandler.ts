@@ -1,5 +1,4 @@
 import { setTimeout } from 'node:timers/promises';
-import oicqClient from '../instances/oicqClient.js';
 import verifyClient from '../utils/verifyClient.js';
 import configProvider from './configProvider.js';
 import server from './fastifyServer.js';
@@ -21,14 +20,11 @@ server.ready().then(() => {
     socket.on('changeConfig', async (newConfig) => {
       configProvider.setConfig(newConfig);
       await configProvider.saveConfig();
+      server.io.to('verified').emit('sendConfig', configProvider.config);
     });
     await setTimeout(10000);
     if (!valid) socket.disconnect();
   });
-});
-
-oicqClient.onMessage.subscribe((e) => {
-  server.io.to('verified').emit('newMessage', e);
 });
 
 export default '';
