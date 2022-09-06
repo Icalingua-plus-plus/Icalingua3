@@ -28,7 +28,7 @@ const genKey = async () => {
     }
   }
   const keyPair = await crypto.webcrypto.subtle.generateKey(
-    { name: 'ECDSA', namedCurve: 'P-521' },
+    { name: 'ECDSA', namedCurve: 'P-256' },
     true,
     ['sign', 'verify'],
   );
@@ -59,14 +59,14 @@ const viewKey = async () => {
       crypto.webcrypto.subtle.importKey(
         'jwk',
         keyPair.privateKey,
-        { name: 'ECDSA', namedCurve: 'P-521' },
+        { name: 'ECDSA', namedCurve: 'P-256' },
         true,
         ['sign'],
       ),
       crypto.webcrypto.subtle.importKey(
         'jwk',
         keyPair.publicKey,
-        { name: 'ECDSA', namedCurve: 'P-521' },
+        { name: 'ECDSA', namedCurve: 'P-256' },
         true,
         ['verify'],
       ),

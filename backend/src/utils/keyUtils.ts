@@ -7,7 +7,7 @@ import { keyPairPath } from './pathUtils.js';
 const getKey = async () => {
   let keyPairStr;
   try {
-    keyPairStr = (await fs.readFile(keyPairPath)).toString();
+    keyPairStr = await fs.readFile(keyPairPath, 'utf-8');
   } catch (e) {
     logger.error('Key pair not found. Please generate it first.');
     logger.info('Use `pnpm keyctl` and follow the guide to generate a new key pair.');
@@ -22,14 +22,14 @@ const getKey = async () => {
       crypto.webcrypto.subtle.importKey(
         'jwk',
         keyPair.publicKey,
-        { name: 'ECDSA', namedCurve: 'P-521' },
+        { name: 'ECDSA', namedCurve: 'P-256' },
         true,
         ['verify'],
       ),
       crypto.webcrypto.subtle.importKey(
         'jwk',
         keyPair.privateKey,
-        { name: 'ECDSA', namedCurve: 'P-521' },
+        { name: 'ECDSA', namedCurve: 'P-256' },
         true,
         ['sign'],
       ),

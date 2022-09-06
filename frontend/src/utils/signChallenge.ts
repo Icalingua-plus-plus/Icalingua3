@@ -8,7 +8,7 @@ const signChallenge = async (challenge: string, key: string) => {
   const privateKey = await crypto.subtle.importKey(
     'jwk',
     jwk,
-    { name: 'ECDSA', namedCurve: 'P-521' },
+    { name: 'ECDSA', namedCurve: 'P-256' },
     false,
     ['sign'],
   );
