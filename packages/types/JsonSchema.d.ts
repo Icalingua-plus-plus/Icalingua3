@@ -1,4 +1,4 @@
-interface JsonSchema7 {
+export interface JsonSchema7 {
   $ref?: string;
   /**
    * This is important because it tells refs where

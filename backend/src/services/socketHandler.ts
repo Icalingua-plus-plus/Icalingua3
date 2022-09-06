@@ -37,7 +37,7 @@ server.ready().then(() => {
   });
 });
 
-oicqClient.onMessage.forEach((e) => {
+oicqClient.onMessage.subscribe((e) => {
   socketPool.forEach((item) => {
     item.socket.emit('newMessage', e);
   });

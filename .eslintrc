@@ -33,7 +33,7 @@
     "vue/html-closing-bracket-newline": 0,
     "import/no-extraneous-dependencies": [
       "error",
-      { "packageDir": ["./", "./frontend", "./backend"] }
+      { "packageDir": ["./", "./frontend", "./backend", "./packages/types"] }
     ],
     "jsdoc/require-jsdoc": [
       "error",

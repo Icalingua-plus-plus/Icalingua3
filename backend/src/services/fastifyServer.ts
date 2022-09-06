@@ -10,7 +10,7 @@ server.register(fastifyIO.default, {
 });
 server.register(fastifyStatic, { root: staticPath });
 server.setNotFoundHandler((req, res) => {
-  res.status(200).sendFile('index.html');
+  (res.status(200) as any).sendFile('index.html');
 });
 
 export default server;

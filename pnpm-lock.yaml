@@ -118,7 +118,10 @@ importers:
       vue-tsc: 0.40.5_typescript@4.8.2
 
   packages/types:
-    specifiers: {}
+    specifiers:
+      json-schema-to-ts: ^2.5.5
+    dependencies:
+      json-schema-to-ts: 2.5.5
 
   packages/utils:
     specifiers: {}
@@ -2530,6 +2533,14 @@ packages:
     engines: {node: '>=12.0.0'}
     dev: true
 
+  /json-schema-to-ts/2.5.5:
+    resolution: {integrity: sha512-GFD5t0fUnX/B0gE9xbHjxv2BwFXRJND2+OKoLoMElJ3XRJ7dOBlLT7KXpg96aETeZ0RJbAZOfqHALBf5k4aIIA==}
+    dependencies:
+      '@types/json-schema': 7.0.11
+      ts-algebra: 1.1.1
+      ts-toolbelt: 9.6.0
+    dev: false
+
   /json-schema-traverse/0.4.1:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
     dev: true
@@ -3648,6 +3659,12 @@ packages:
     resolution: {integrity: sha512-XrHUvV5HpdLmIj4uVMxHggLbFSZYIn7HEWsqePZcI50pco+MPqJ50wMGY794X7AOOhxOBAjbkqfAbEe/QMp2Lw==}
     dev: false
 
+  /ts-algebra/1.1.1:
+    resolution: {integrity: sha512-W43a3/BN0Tp4SgRNERQF/QPVuY1rnHkgCr/fISLY0Ycu05P0NWPYRuViU8JFn+pFZuY6/zp9TgET1fxMzppR/Q==}
+    dependencies:
+      ts-toolbelt: 9.6.0
+    dev: false
+
   /ts-node/10.9.1_itmtyrrie7wpjnrpwbb5uqyzwa:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
@@ -3678,6 +3695,10 @@ packages:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
+
+  /ts-toolbelt/9.6.0:
+    resolution: {integrity: sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==}
+    dev: false
 
   /tsconfig-paths/3.14.1:
     resolution: {integrity: sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==}

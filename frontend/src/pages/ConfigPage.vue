@@ -1,29 +1,23 @@
 <template>
   <AppContainer>
     {{ data }}
-    <JsonForms :data="data" :schema="schema" :renderers="renderer" @change="handleChange" />
+    <JsonForms
+      :data="data"
+      :schema="(schema as unknown as JsonSchema)"
+      :renderers="renderer"
+      @change="handleChange"
+    />
   </AppContainer>
 </template>
 <script setup lang="ts">
-import type JsonSchema from '@icalingua/types/JsonSchema';
+import schema from '@icalingua/types/IAppConfig';
+import JsonSchema from '@icalingua/types/JsonSchema';
 import { JsonForms, JsonFormsChangeEvent } from '@jsonforms/vue';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
 import { ref } from 'vue';
 import AppContainer from '../components/AppContainer.vue';
 
 const renderer = Object.freeze(vanillaRenderers);
-const schema: JsonSchema = {
-  required: ['qid', 'protocol', 'password'],
-  properties: {
-    qid: { type: 'integer', title: 'QQ号' },
-    password: { type: 'string', title: '密码' },
-    protocol: {
-      type: 'string',
-      title: '协议',
-      enum: ['iPad', 'Android Pad', 'Watch', 'Android Phone', 'Mac OS'],
-    },
-  },
-};
 const data = ref({ qid: 0, password: '', protocol: 'iPad' });
 /** 处理表单变化 */
 const handleChange = (e: JsonFormsChangeEvent) => {

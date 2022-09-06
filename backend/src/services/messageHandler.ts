@@ -13,12 +13,12 @@ oicqClient
   })
   .login(settings.password);
 
-oicqClient.onSystemOnline.forEach(() => {
+oicqClient.onSystemOnline.subscribe(() => {
   logger.info('oicq logged in');
   oicqClient.emit('sync.message');
 });
 
-oicqClient.onMessage.forEach(async (e) => {
+oicqClient.onMessage.subscribe(async (e) => {
   if (!settings.toast) return;
   let group;
   let attribution;
