@@ -7,6 +7,8 @@
 - oicq2
 - socket.io
 - Vue3
+- Fastify
+- WindiCSS
 - rxjs
 - 后端也采用 Native ESM 而非 CommonJS（要求 Nodejs >= 16）
 
@@ -17,6 +19,8 @@ git clone https://github.com/Icalingua-plus-plus/Icalingua3
 pnpm i # 需要 Node.js 16 或以上，并且启用 corepack
 pnpm dev # 这条命令会同时启动前后端
 ```
+
+在开发后端（而不需要 oicq）时，频繁启动服务器可能让 oicq 频繁登录而风控，这时用 `pnpm dev:backend -- --n` 可以不启动 oicq 而启动后端。
 
 ## 关于官方可能的 Electron 版本
 

@@ -12,7 +12,9 @@
     "esModuleInterop": true,
     "lib": ["esnext"],
     "rootDir": "..",
-    "noEmit": true
+    "noEmit": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "ts-node": { "esm": true }

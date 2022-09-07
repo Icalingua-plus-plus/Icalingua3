@@ -20,8 +20,11 @@
   },
   "dependencies": {
     "@fastify/static": "^6.5.0",
+    "@mikro-orm/core": "^5.4.0",
+    "@mikro-orm/sqlite": "^5.4.0",
     "colors": "^1.4.0",
     "fastify": "^4.5.3",
+    "fastify-plugin": "^4.2.1",
     "fastify-socket.io": "^4.0.0",
     "inquirer": "^9.1.0",
     "minimist": "^1.2.6",

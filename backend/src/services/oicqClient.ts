@@ -7,9 +7,6 @@ import registerMessageHandler from './registerMessageHandler.js';
 
 /** 用 rxjs 包装的 Client类 */
 export class ObservableClient extends Client {
-  /** 已登录 */
-  loggedIn = false;
-
   constructor(uin: number, conf: Config) {
     super(uin, conf);
     this.onMessage = new Observable<PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent>(
@@ -18,10 +15,7 @@ export class ObservableClient extends Client {
       },
     );
     this.onSystemOnline = new Observable<void>((subscriber) => {
-      this.on('system.online', () => {
-        this.loggedIn = true;
-        subscriber.next();
-      });
+      this.on('system.online', () => subscriber.next());
     });
   }
 
