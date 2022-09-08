@@ -5,13 +5,16 @@ import { Observable } from 'rxjs';
 import type { Socket } from 'socket.io-client';
 import { io } from 'socket.io-client';
 import signChallenge from '../utils/signChallenge';
+import axiosClient from './axiosClient';
 
 /** 客户端 socket 类 */
 class ClientSocket {
   socket?: Socket<ServerToClientEvents, ClientToServerEvents>;
 
+  /** 收到新消息 */
   declare onMessage: Observable<GroupMessageEvent | PrivateMessageEvent | DiscussMessageEvent>;
 
+  /** 收到新配置 */
   declare onSendConfig: Observable<IAppConfig>;
 
   /** 更新内部的 socket 对象 */
@@ -20,15 +23,18 @@ class ClientSocket {
       transports: ['websocket'],
     });
     this.socket = socket;
-    socket.once('challenge', async (ev) => {
+    socket.on('challenge', async (ev) => {
       const signature = await signChallenge(ev, key);
-      socket.emit('verify', signature).emit('requestConfig');
+      socket.emit('verify', signature).emit('requestConfig').emit('requestToken');
     });
     this.onMessage = new Observable((subscriber) => {
       socket.on('newMessage', (msg) => subscriber.next(msg));
     });
     this.onSendConfig = new Observable((subscriber) => {
       socket.on('sendConfig', (cfg) => subscriber.next(cfg));
+    });
+    socket.on('sendToken', (token) => {
+      axiosClient.changeToken(token);
     });
   }
 }

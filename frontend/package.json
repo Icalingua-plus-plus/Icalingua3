@@ -14,6 +14,8 @@
     "@jsonforms/vue": "^3.0.0-rc.1",
     "@jsonforms/vue-vanilla": "^3.0.0-rc.1",
     "@vueuse/core": "^9.2.0",
+    "axios": "^0.27.2",
+    "js-base64": "^3.7.2",
     "socket.io-client": "^4.5.2",
     "vue": "^3.2.38",
     "vue-router": "^4.1.5"

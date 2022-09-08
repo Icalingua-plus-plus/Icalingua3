@@ -101,6 +101,8 @@ importers:
       '@jsonforms/vue-vanilla': ^3.0.0-rc.1
       '@vitejs/plugin-vue': ^3.1.0
       '@vueuse/core': ^9.2.0
+      axios: ^0.27.2
+      js-base64: ^3.7.2
       socket.io-client: ^4.5.2
       typescript: ^4.8.2
       vite: ^3.1.0
@@ -113,6 +115,8 @@ importers:
       '@jsonforms/vue': 3.0.0-rc.1_t23pmtzliituslcbdffym74v4a
       '@jsonforms/vue-vanilla': 3.0.0-rc.1_ule3ddi5lz6z6go4ofuxcuyh7m
       '@vueuse/core': 9.2.0_vue@3.2.38
+      axios: 0.27.2
+      js-base64: 3.7.2
       socket.io-client: 4.5.2
       vue: 3.2.38
       vue-router: 4.1.5_vue@3.2.38
@@ -2929,6 +2933,10 @@ packages:
     resolution: {integrity: sha512-4IwstlaKQc9vCTC+qUXLM1hajy2ImiL9KnLvVYiaHOtS/v3wRjhLlGl121AmgDgx/O43uKmxownJghS5XMya2A==}
     hasBin: true
     dev: true
+
+  /js-base64/3.7.2:
+    resolution: {integrity: sha512-NnRs6dsyqUXejqk/yv2aiXlAvOs56sLkX6nUdeaNezI5LFFLlsZjOThmwnrcwh5ZZRwZlCMnVAY3CvhIhoVEKQ==}
+    dev: false
 
   /js-yaml/4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
