@@ -75,6 +75,13 @@
           "unique": false
         },
         {
+          "keyName": "message_room_id_seq_rand_time_unique",
+          "columnNames": ["room_id", "seq", "rand", "time"],
+          "composite": true,
+          "primary": false,
+          "unique": true
+        },
+        {
           "keyName": "primary",
           "columnNames": ["id"],
           "composite": false,
