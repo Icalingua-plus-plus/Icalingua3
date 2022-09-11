@@ -10,17 +10,12 @@ class ConfigProvider {
   config: IAppConfig;
 
   constructor() {
-    // 在这里用了一堆类型魔法，罪过罪过
-    this.config = (() => {
-      const tempConfig = {} as unknown as IAppConfig;
-      const keys = Object.keys(
-        schema.default.properties,
-      ) as unknown as (keyof typeof schema.default.properties)[];
-      keys.forEach((key) => {
-        tempConfig[key] = schema.default.properties[key].default as never;
-      });
-      return tempConfig;
-    })();
+    this.config = Object.fromEntries(
+      Object.entries(schema.default.properties).map(([key, value]) => [
+        key as unknown as (keyof typeof schema.default.properties)[],
+        value.default as unknown as IAppConfig,
+      ]),
+    );
   }
 
   /** 替换 config 对象 */
