@@ -9,6 +9,7 @@ export class Message {
   @PrimaryKey({ autoincrement: true })
   id!: number;
 
+  @Index()
   @Property()
   roomId!: string;
 

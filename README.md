@@ -10,6 +10,7 @@
 - Fastify
 - WindiCSS
 - rxjs
+- MikroORM
 - 后端也采用 Native ESM 而非 CommonJS（要求 Nodejs >= 16）
 
 ## 如何开发

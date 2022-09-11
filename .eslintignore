@@ -4,3 +4,4 @@ node_modules
 vite.config.ts
 dist
 static
+backend/src/database/migrations
