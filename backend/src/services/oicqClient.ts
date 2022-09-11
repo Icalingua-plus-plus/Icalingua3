@@ -34,7 +34,7 @@ export const status = {
 };
 
 /** 初始化 oicq 实例并登录 */
-const init = async () => {
+const oicqInit = async () => {
   try {
     status.running = true;
     const oicqClient = new ObservableClient(configProvider.config.qid, {
@@ -52,4 +52,4 @@ const init = async () => {
   }
 };
 
-export default init;
+export default oicqInit;

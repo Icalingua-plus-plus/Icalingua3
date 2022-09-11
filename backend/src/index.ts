@@ -1,9 +1,9 @@
-import oicqInit from './services/oicqClient.js';
 import configProvider from './services/configProvider.js';
 import fastifyServer from './services/fastifyServer.js';
+import oicqInit from './services/oicqClient.js';
 import socketHandler from './services/socketHandler.js';
-import keyUtils from './utils/keyUtils.js';
 import argv from './utils/argv.js';
+import keyUtils from './utils/keyUtils.js';
 
 await configProvider.loadConfig();
 if (configProvider.config.qid && !argv.noStartOicq) {

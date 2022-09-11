@@ -1,6 +1,8 @@
 import { GroupMessage, PrivateMessage } from 'oicq';
 import toast, { remove } from 'powertoast';
 import { setTimeout } from 'timers/promises';
+import { Message } from '../database/entities/Message.js';
+import { getEM } from '../database/storageProvider.js';
 import logger from '../utils/logger.js';
 import configProvider from './configProvider.js';
 import type { ObservableClient } from './oicqClient.js';
@@ -12,6 +14,17 @@ const registerMessageHandler = (oicqClient: ObservableClient) => {
   oicqClient.onSystemOnline.subscribe(() => {
     logger.info('oicq logged in');
     oicqClient.emit('sync.message');
+  });
+
+  /** 把消息存数据库里 */
+  oicqClient.onMessage.subscribe(async (e) => {
+    const message = new Message(e);
+    await getEM().persistAndFlush([message]);
+  });
+
+  /** 输出调试信息 */
+  oicqClient.onMessage.subscribe(async (e) => {
+    logger.debug(JSON.stringify(e));
   });
 
   // 目前只搞了 Windows 的，POSIX 的以后再说
