@@ -1,7 +1,8 @@
 import { GroupMessage, PrivateMessage } from 'oicq';
 import toast, { remove } from 'powertoast';
 import { setTimeout } from 'timers/promises';
-import { Message } from '../database/entities/Message.js';
+import ChatRoom from '../database/entities/ChatRoom.js';
+import Message from '../database/entities/Message.js';
 import { getEM } from '../database/storageProvider.js';
 import logger from '../utils/logger.js';
 import configProvider from './configProvider.js';
@@ -18,8 +19,21 @@ const registerMessageHandler = (oicqClient: ObservableClient) => {
 
   /** 把消息存数据库里 */
   oicqClient.onMessage.subscribe(async (e) => {
+    const em = getEM();
     const message = new Message(e);
-    await getEM().persistAndFlush([message]);
+    let chatRoom = await em.findOne(ChatRoom, { roomId: message.roomId });
+    if (!chatRoom) {
+      if (e instanceof PrivateMessage) {
+        chatRoom = new ChatRoom(e.friend);
+      } else if (e instanceof GroupMessage) {
+        chatRoom = new ChatRoom(e.group);
+      } else {
+        chatRoom = new ChatRoom(e.discuss);
+      }
+    }
+    chatRoom.lastMessage = e.raw_message;
+    chatRoom.lastMessageTime = e.time;
+    await em.persistAndFlush([message, chatRoom]);
   });
 
   /** 输出调试信息 */

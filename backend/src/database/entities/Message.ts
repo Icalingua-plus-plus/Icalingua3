@@ -1,25 +1,27 @@
 /* eslint-disable import/prefer-default-export */
-import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
+import { BigIntType, Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
 import { Message as OicqMessage, PrivateMessage, GroupMessage, DiscussMessage } from 'oicq';
 
 /** 消息 */
 @Entity()
-@Index({ properties: ['seq', 'rand', 'time'] })
 @Unique({ properties: ['roomId', 'seq', 'rand', 'time'] })
-export class Message {
-  @PrimaryKey({ autoincrement: true })
-  id!: number;
+export default class Message {
+  @PrimaryKey({ autoincrement: true, type: BigIntType })
+  id!: string;
 
   @Index()
   @Property()
   roomId!: string;
 
+  @Index()
   @Property()
   seq!: number;
 
+  @Index()
   @Property()
   time!: number;
 
+  @Index()
   @Property()
   rand!: number;
 

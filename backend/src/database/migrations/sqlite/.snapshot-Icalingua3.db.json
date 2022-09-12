@@ -3,14 +3,107 @@
   "tables": [
     {
       "columns": {
+        "room_id": {
+          "name": "room_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "last_message": {
+          "name": "last_message",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "last_message_time": {
+          "name": "last_message_time",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "is_admin": {
+          "name": "is_admin",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "is_owner": {
+          "name": "is_owner",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "noti_level": {
+          "name": "noti_level",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        }
+      },
+      "name": "chat_room",
+      "indexes": [
+        {
+          "columnNames": ["room_id"],
+          "composite": false,
+          "keyName": "chat_room_room_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["last_message_time"],
+          "composite": false,
+          "keyName": "chat_room_last_message_time_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": ["room_id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "bigint",
           "unsigned": true,
           "autoincrement": true,
           "primary": true,
           "nullable": false,
-          "mappedType": "integer"
+          "mappedType": "bigint"
         },
         "room_id": {
           "name": "room_id",
@@ -68,9 +161,23 @@
           "unique": false
         },
         {
-          "keyName": "message_seq_rand_time_index",
-          "columnNames": ["seq", "rand", "time"],
-          "composite": true,
+          "columnNames": ["seq"],
+          "composite": false,
+          "keyName": "message_seq_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["time"],
+          "composite": false,
+          "keyName": "message_time_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["rand"],
+          "composite": false,
+          "keyName": "message_rand_index",
           "primary": false,
           "unique": false
         },
