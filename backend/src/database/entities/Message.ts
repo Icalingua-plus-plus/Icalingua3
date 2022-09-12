@@ -50,11 +50,11 @@ export default class Message {
       roomId = `group-${message.group_id}`;
       this.atall = !!message.atall;
       this.atme = !!message.atme;
-      this.confirmed = false;
+      this.confirmed = !message.atall && !message.atme;
     } else {
       roomId = `discuss-${message.discuss_id}`;
       this.atme = !!message.atme;
-      this.confirmed = false;
+      this.confirmed = !message.atme;
     }
     this.roomId = roomId;
     this.content = message.serialize();
