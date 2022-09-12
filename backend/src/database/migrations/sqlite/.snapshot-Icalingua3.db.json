@@ -39,24 +39,6 @@
           "nullable": true,
           "mappedType": "integer"
         },
-        "is_admin": {
-          "name": "is_admin",
-          "type": "integer",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
-        "is_owner": {
-          "name": "is_owner",
-          "type": "integer",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
         "noti_level": {
           "name": "noti_level",
           "type": "integer",
@@ -141,6 +123,36 @@
           "nullable": false,
           "mappedType": "integer"
         },
+        "atall": {
+          "name": "atall",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "integer"
+        },
+        "atme": {
+          "name": "atme",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "integer"
+        },
+        "confirmed": {
+          "name": "confirmed",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "integer"
+        },
         "content": {
           "name": "content",
           "type": "blob",
@@ -178,6 +190,20 @@
           "columnNames": ["rand"],
           "composite": false,
           "keyName": "message_rand_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["atall"],
+          "composite": false,
+          "keyName": "message_atall_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["atme"],
+          "composite": false,
+          "keyName": "message_atme_index",
           "primary": false,
           "unique": false
         },

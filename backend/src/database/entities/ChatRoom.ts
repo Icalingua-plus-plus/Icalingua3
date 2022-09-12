@@ -19,12 +19,6 @@ export default class ChatRoom {
   @Index()
   lastMessageTime?: number;
 
-  @Property()
-  isAdmin?: boolean;
-
-  @Property()
-  isOwner?: boolean;
-
   /** 从 0-5 共 6 级 */
   @Property()
   notiLevel!: number;
@@ -37,8 +31,6 @@ export default class ChatRoom {
     } else if (item instanceof Group) {
       this.roomId = `group-${item.gid}`;
       this.name = item.name || `群聊 ${item.gid}`;
-      this.isAdmin = item.is_admin;
-      this.isOwner = item.is_owner;
     } else {
       this.roomId = `discuss-${item.gid}`;
       this.name = `讨论组 ${item.gid}`;

@@ -31,7 +31,7 @@ const registerMessageHandler = (oicqClient: ObservableClient) => {
         chatRoom = new ChatRoom(e.discuss);
       }
     }
-    chatRoom.lastMessage = e.raw_message;
+    chatRoom.lastMessage = e.toString();
     chatRoom.lastMessageTime = e.time;
     await em.persistAndFlush([message, chatRoom]);
   });
