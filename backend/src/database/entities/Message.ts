@@ -43,6 +43,11 @@ export default class Message {
   content!: Buffer;
 
   constructor(message: PrivateMessage | GroupMessage | DiscussMessage) {
+    this.update(message);
+  }
+
+  /** 更新当前实例 */
+  update(message: PrivateMessage | GroupMessage | DiscussMessage) {
     let roomId = '';
     if (message instanceof PrivateMessage) {
       roomId = `private-${message.sender.user_id}`;

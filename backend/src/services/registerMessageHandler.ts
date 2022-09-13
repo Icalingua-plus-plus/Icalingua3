@@ -21,19 +21,22 @@ const registerMessageHandler = (oicqClient: ObservableClient) => {
   oicqClient.onMessage.subscribe(async (e) => {
     const em = getEM();
     const message = new Message(e);
-    let chatRoom = await em.findOne(ChatRoom, { roomId: message.roomId });
-    if (!chatRoom) {
-      if (e instanceof PrivateMessage) {
-        chatRoom = new ChatRoom(e.friend);
-      } else if (e instanceof GroupMessage) {
-        chatRoom = new ChatRoom(e.group);
-      } else {
-        chatRoom = new ChatRoom(e.discuss);
-      }
+    const qb = em.qb(Message);
+    /** Upsert，注意 roomId 在数据库里是 room_id */
+    await qb.insert(message).onConflict(['room_id', 'seq', 'rand', 'time']).merge().execute();
+    let chatRoom;
+    if (e instanceof PrivateMessage) {
+      chatRoom = new ChatRoom(e.friend);
+    } else if (e instanceof GroupMessage) {
+      chatRoom = new ChatRoom(e.group);
+    } else {
+      chatRoom = new ChatRoom(e.discuss);
     }
     chatRoom.lastMessage = e.toString();
     chatRoom.lastMessageTime = e.time;
-    await em.persistAndFlush([message, chatRoom]);
+    const rqb = em.qb(ChatRoom);
+    /** Upsert，注意 roomId 在数据库里是 room_id */
+    await rqb.insert(chatRoom).onConflict(['room_id']).merge().execute();
   });
 
   /** 输出调试信息 */
