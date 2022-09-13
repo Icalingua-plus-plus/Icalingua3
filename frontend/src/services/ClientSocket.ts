@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import type { Socket } from 'socket.io-client';
 import { io } from 'socket.io-client';
 import signChallenge from '../utils/signChallenge';
-import axiosClient from './axiosClient';
 
 /** 客户端 socket 类 */
 class ClientSocket {
@@ -32,9 +31,6 @@ class ClientSocket {
     });
     this.onSendConfig = new Observable((subscriber) => {
       socket.on('sendConfig', (cfg) => subscriber.next(cfg));
-    });
-    socket.on('sendToken', (token) => {
-      axiosClient.changeToken(token);
     });
   }
 }

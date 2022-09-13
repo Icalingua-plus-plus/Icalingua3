@@ -38,6 +38,7 @@
 import { useStorage } from '@vueuse/core';
 import { ref } from 'vue';
 import useRR from '../hooks/useRR';
+import axiosClient from '../services/axiosClient';
 import clientSocket from '../services/ClientSocket';
 
 const { route, router } = useRR();
@@ -57,6 +58,9 @@ const handleClick = async (e: MouseEvent) => {
       body: ev.raw_message,
     });
   });
-  router.push((route.query.to as string) || '/config');
+  clientSocket.socket!.on('sendToken', (token) => {
+    axiosClient.changeToken(token);
+    router.push((route.query.to as string) || '/config');
+  });
 };
 </script>

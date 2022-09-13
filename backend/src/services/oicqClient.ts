@@ -33,11 +33,14 @@ export const status = {
   loggedIn: false,
 };
 
+// eslint-disable-next-line import/no-mutable-exports
+export let oicqClient: ObservableClient | undefined;
+
 /** 初始化 oicq 实例并登录 */
 const oicqInit = async () => {
   try {
     status.running = true;
-    const oicqClient = new ObservableClient(configProvider.config.qid, {
+    oicqClient = new ObservableClient(configProvider.config.qid, {
       platform: 2,
       data_dir: oicqDataPath,
     });

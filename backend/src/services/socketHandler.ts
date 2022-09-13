@@ -39,5 +39,3 @@ server.ready().then(() => {
     next();
   });
 });
-
-export default '';

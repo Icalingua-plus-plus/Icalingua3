@@ -14,7 +14,8 @@
     "rootDir": "..",
     "noEmit": true,
     // VueUse 的类型定义有问题
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "experimentalDecorators": true
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]

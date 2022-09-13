@@ -4,6 +4,9 @@ import axios, { AxiosRequestConfig } from 'axios';
 class AxiosClient {
   client = axios.create();
 
+  /** 正确的实例已被生成 */
+  loggedIn = false;
+
   /** 改变 axios 配置 */
   changeConfig(config?: AxiosRequestConfig<any>) {
     this.client = axios.create(config);
@@ -12,6 +15,7 @@ class AxiosClient {
   /** 改变 Token */
   changeToken(token: string) {
     this.changeConfig({ headers: { Authorization: `Bearer ${token}` } });
+    this.loggedIn = true;
   }
 }
 
