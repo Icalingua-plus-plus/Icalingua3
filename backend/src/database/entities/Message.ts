@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import type RoomId from '@icalingua/types/RoomId.js';
 import { BigIntType, Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
 import { PrivateMessage, GroupMessage, DiscussMessage } from 'oicq';
 
@@ -11,7 +12,7 @@ export default class Message {
 
   @Index()
   @Property()
-  roomId!: string;
+  roomId!: RoomId.default;
 
   @Index()
   @Property({ unsigned: true })
@@ -43,15 +44,10 @@ export default class Message {
   content!: Buffer;
 
   constructor(message: PrivateMessage | GroupMessage | DiscussMessage) {
-    this.update(message);
-  }
-
-  /** 更新当前实例 */
-  update(message: PrivateMessage | GroupMessage | DiscussMessage) {
-    let roomId = '';
-    if (message instanceof PrivateMessage) {
+    let roomId: RoomId.default;
+    if (message.message_type === 'private') {
       roomId = `private-${message.sender.user_id}`;
-    } else if (message instanceof GroupMessage) {
+    } else if (message.message_type === 'group') {
       roomId = `group-${message.group_id}`;
       this.atall = !!message.atall;
       this.atme = !!message.atme;

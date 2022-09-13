@@ -32,7 +32,7 @@ const registerMessageHandler = (oicqClient: ObservableClient) => {
     } else {
       chatRoom = new ChatRoom(e.discuss);
     }
-    chatRoom.lastMessage = e.toString();
+    chatRoom.lastMessage = `${e.sender.nickname}: ${e.raw_message}`;
     chatRoom.lastMessageTime = e.time;
     const rqb = em.qb(ChatRoom);
     /** Upsert，注意 roomId 在数据库里是 room_id */
