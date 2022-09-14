@@ -1,6 +1,6 @@
+import { MessageItem } from '@icalingua/types/http/HTTPMessage';
 import { IAppConfig } from '@icalingua/types/IAppConfig';
 import type { ClientToServerEvents, ServerToClientEvents } from '@icalingua/types/socketIoTypes';
-import type { DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent } from 'oicq';
 import { Observable } from 'rxjs';
 import type { Socket } from 'socket.io-client';
 import { io } from 'socket.io-client';
@@ -11,7 +11,7 @@ class ClientSocket {
   socket?: Socket<ServerToClientEvents, ClientToServerEvents>;
 
   /** 收到新消息 */
-  declare onMessage: Observable<GroupMessageEvent | PrivateMessageEvent | DiscussMessageEvent>;
+  declare onMessage: Observable<MessageItem>;
 
   /** 收到新配置 */
   declare onSendConfig: Observable<IAppConfig>;

@@ -11,7 +11,11 @@ import Message from './entities/Message.js';
 export const messageParse = (message: Message) => {
   const oicqMessage = OicqMessage.deserialize(message.content, configProvider.config.qid);
   const avatar = oicqClient?.pickUser(oicqMessage.sender.user_id)?.getAvatarUrl() || null;
-  return Object.assign(oicqMessage, { avatar, id: message.id }) as MessageItem;
+  return Object.assign(oicqMessage, {
+    avatar,
+    id: message.id,
+    roomId: message.roomId,
+  }) as MessageItem;
 };
 
 /** 从数据库里的 ChatRoom 对象生成响应（目前只是获取缩略图）

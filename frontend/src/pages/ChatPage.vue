@@ -28,12 +28,16 @@ import { ref, watchEffect } from 'vue';
 import defaultRoom from '../assets/defaultRoom.png';
 import AppContainer from '../components/AppContainer.vue';
 import useRR from '../hooks/useRR';
+import clientSocket from '../services/ClientSocket';
 import { getMessages } from '../services/messages';
 
 const { route } = useRR();
+const { roomId } = route.params as { roomId: RoomId };
 const messages = ref<MessageItem[]>([]);
+clientSocket.onMessage.subscribe((msg) => {
+  if (msg.roomId === roomId) messages.value.push(msg);
+});
 watchEffect(async () => {
-  const { roomId } = route.params as { roomId: RoomId };
   const res = await getMessages(roomId);
   console.log(res);
   messages.value = res.messages;

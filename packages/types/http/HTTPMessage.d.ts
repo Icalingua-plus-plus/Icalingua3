@@ -1,4 +1,5 @@
 import type { DiscussMessage, GroupMessage, PrivateMessage } from 'oicq';
+import RoomId from '../RoomId';
 
 export interface IMessageQs {
   /** seq 最大者 */
@@ -15,7 +16,7 @@ export interface IMessageQs {
 
 export type EMessage = PrivateMessage | GroupMessage | DiscussMessage;
 
-export type MessageItem = EMessage & { avatar: string | null; id: string };
+export type MessageItem = EMessage & { avatar: string | null; id: string; roomId: RoomId };
 
 export interface IMessageRes {
   messages: MessageItem[];
