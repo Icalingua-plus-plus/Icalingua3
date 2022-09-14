@@ -2,7 +2,6 @@ import { Client, Config, DiscussMessageEvent, GroupMessageEvent, PrivateMessageE
 import { Observable } from 'rxjs';
 import { oicqDataPath } from '../utils/pathUtils.js';
 import configProvider from './configProvider.js';
-import server from './fastifyServer.js';
 import registerMessageHandler from './registerMessageHandler.js';
 
 /** 用 rxjs 包装的 Client类 */
@@ -43,9 +42,6 @@ const oicqInit = async () => {
     oicqClient = new ObservableClient(configProvider.config.qid, {
       platform: 2,
       data_dir: oicqDataPath,
-    });
-    oicqClient.onMessage.subscribe((e) => {
-      server.io.to('verified').emit('newMessage', e);
     });
     await oicqClient.login(configProvider.config.password);
     status.loggedIn = true;

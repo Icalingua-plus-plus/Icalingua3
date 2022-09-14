@@ -1,27 +1,13 @@
 import type { ChatRoomsResItem } from '@icalingua/types/http/ChatRoomsRes.js';
+import type { IMessageQs, IMessageRes } from '@icalingua/types/http/HTTPMessage.js';
 import type RoomId from '@icalingua/types/RoomId.js';
 import { FastifyInstance } from 'fastify';
 import ChatRoom from '../database/entities/ChatRoom.js';
+import Message from '../database/entities/Message.js';
+import { messageParse, roomParse } from '../database/parser.js';
 import { getEM } from '../database/storageProvider.js';
 import { oicqClient } from '../services/oicqClient.js';
 import isSocketVerified from '../utils/isSocketVerified.js';
-
-/** 从数据库里的 ChatRoom 对象生成响应（目前只是获取缩略图）
- * @param room 数据库里的 ChatRoom 对象
- */
-const getChatRoomResItem = (room: ChatRoom) => {
-  const roomId = room.roomId.replace(/.*-/, '');
-  if (room.roomId.startsWith('group-')) {
-    const group = oicqClient?.pickGroup(Number(roomId));
-    return { ...room, avatar: group?.getAvatarUrl() || null };
-  }
-  if (room.roomId.startsWith('discuss-')) {
-    // const discuss = oicqClient.pickDiscuss(Number(roomId));
-    return { ...room, avatar: null };
-  }
-  const user = oicqClient?.pickUser(Number(roomId));
-  return { ...room, avatar: user?.getAvatarUrl() || null };
-};
 
 /** `/api` 路由 */
 const apiRouter = async (server: FastifyInstance) => {
@@ -37,7 +23,7 @@ const apiRouter = async (server: FastifyInstance) => {
   /** 获取聊天室列表 */
   server.get('/chatRooms', async (req, res) => {
     const rooms = await getEM().find(ChatRoom, {}, { orderBy: { lastMessageTime: 'DESC' } });
-    const data: ChatRoomsResItem[] = rooms.map(getChatRoomResItem);
+    const data: ChatRoomsResItem[] = rooms.map(roomParse);
     res.send(data);
   });
   server.get<{ Params: { roomId: RoomId.default } }>('/chatroom/:roomId', async (req, res) => {
@@ -60,8 +46,28 @@ const apiRouter = async (server: FastifyInstance) => {
       /** 有可能会脏查询和 Conflict，等遇到这个情况再换成 upsert 之类的 */
       await getEM().persistAndFlush(room);
     }
-    return res.send(getChatRoomResItem(room));
+    return res.send(roomParse(room));
   });
+  server.get<{ Params: { roomId: RoomId.default }; Querystring: IMessageQs }>(
+    '/messages/:roomId',
+    async (req, res) => {
+      const { roomId } = req.params;
+      const { seqLte, seqGte, timeLte, timeGte, limit } = req.query;
+      const [messages, totalCount] = await getEM().findAndCount(
+        Message,
+        {
+          seq: { $gte: seqGte || 0, $lte: seqLte || Number.MAX_SAFE_INTEGER },
+          time: { $gte: timeGte || 0, $lte: timeLte || Number.MAX_SAFE_INTEGER },
+          roomId,
+        },
+        { limit: limit || 20, orderBy: { time: 'DESC' } },
+      );
+      const oicqMessages = messages.map(messageParse);
+      oicqMessages.reverse();
+      const data: IMessageRes = { messages: oicqMessages, totalCount };
+      return res.send(data);
+    },
+  );
 };
 
 export default apiRouter;

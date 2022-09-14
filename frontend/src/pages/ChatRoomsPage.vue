@@ -1,7 +1,12 @@
 <template>
   <AppContainer>
     <main class="flex flex-col gap-2">
-      <div v-for="room in rooms" :key="room.roomId" class="flex gap-2 items-center">
+      <RouterLink
+        v-for="room in rooms"
+        :key="room.roomId"
+        class="flex gap-2 items-center shadow rounded-md p-2"
+        :to="`/chat/${room.roomId}`"
+      >
         <div
           :style="{ 'background-image': `url(${room.avatar || defaultRoom})` }"
           class="h-16 w-16 bg-center bg-cover rounded-full flex-shrink-0"
@@ -11,10 +16,10 @@
           <p class="text-lg">{{ room.name }}</p>
           <p class="text-gray-400 break-all">{{ room.lastMessage }}</p>
         </div>
-        <p v-if="room.lastMessageTime" class="flex-shrink-0">
+        <p v-if="room.lastMessageTime" class="text-gray-300 text-sm flex-shrink-0">
           {{ parseUnixTime(room.lastMessageTime) }}
         </p>
-      </div>
+      </RouterLink>
     </main>
   </AppContainer>
 </template>
@@ -23,6 +28,7 @@ import type { ChatRoomsResItem } from '@icalingua/types/http/ChatRoomsRes';
 import type RoomId from '@icalingua/types/RoomId';
 import parseUnixTime from '@icalingua/utils/parseUnixTime';
 import { onMounted, ref, watchEffect } from 'vue';
+import { RouterLink } from 'vue-router';
 import defaultRoom from '../assets/defaultRoom.png';
 import AppContainer from '../components/AppContainer.vue';
 import axiosClient from '../services/axiosClient';

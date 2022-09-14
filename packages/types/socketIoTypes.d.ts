@@ -1,9 +1,9 @@
-import { DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent } from 'oicq';
+import { MessageItem } from './http/HTTPMessage';
 import { IAppConfig } from './IAppConfig';
 
 export interface ServerToClientEvents {
   /** 收到新消息 */
-  newMessage: (message: GroupMessageEvent | PrivateMessageEvent | DiscussMessageEvent) => void;
+  newMessage: (message: MessageItem) => void;
   /** 服务端向客户端发送一随机字符串，让客户端对之签名 */
   challenge: (challange: string) => void;
   /** 服务端向客户端发送服务端配置 */

@@ -3,9 +3,11 @@ import toast, { remove } from 'powertoast';
 import { setTimeout } from 'timers/promises';
 import ChatRoom from '../database/entities/ChatRoom.js';
 import Message from '../database/entities/Message.js';
+import { messageParse } from '../database/parser.js';
 import { getEM } from '../database/storageProvider.js';
 import logger from '../utils/logger.js';
 import configProvider from './configProvider.js';
+import server from './fastifyServer.js';
 import type { ObservableClient } from './oicqClient.js';
 
 /** 处理 oicq 消息
@@ -37,6 +39,8 @@ const registerMessageHandler = (oicqClient: ObservableClient) => {
     const rqb = em.qb(ChatRoom);
     /** Upsert，注意 roomId 在数据库里是 room_id */
     await rqb.insert(chatRoom).onConflict(['room_id']).merge().execute();
+    /** 搞完这一套以后，向客户端发送新消息 */
+    server.io.to('verified').emit('newMessage', messageParse(message));
   });
 
   /** 输出调试信息 */

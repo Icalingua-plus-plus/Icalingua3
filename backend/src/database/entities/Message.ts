@@ -1,7 +1,6 @@
-/* eslint-disable import/prefer-default-export */
+import type { EMessage } from '@icalingua/types/http/HTTPMessage.js';
 import type RoomId from '@icalingua/types/RoomId.js';
 import { BigIntType, Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
-import { PrivateMessage, GroupMessage, DiscussMessage } from 'oicq';
 
 /** 消息 */
 @Entity()
@@ -43,7 +42,7 @@ export default class Message {
   @Property()
   content!: Buffer;
 
-  constructor(message: PrivateMessage | GroupMessage | DiscussMessage) {
+  constructor(message: EMessage) {
     let roomId: RoomId.default;
     if (message.message_type === 'private') {
       roomId = `private-${message.sender.user_id}`;

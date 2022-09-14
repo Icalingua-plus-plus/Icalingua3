@@ -60,7 +60,7 @@ const handleClick = async (e: MouseEvent) => {
   });
   clientSocket.socket!.on('sendToken', (token) => {
     axiosClient.changeToken(token);
-    router.push((route.query.to as string) || '/config');
+    router.push((route.query.to as string) || '/');
   });
 };
 </script>
