@@ -40,6 +40,7 @@
     "fastify-socket.io": "^4.0.0",
     "inquirer": "^9.1.0",
     "minimist": "^1.2.6",
+    "nanoid": "^4.0.0",
     "powertoast": "^2.1.5",
     "socket.io": "^4.5.1",
     "winston": "^3.8.1",

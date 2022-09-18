@@ -1,13 +1,14 @@
 import type { EMessage } from '@icalingua/types/http/HTTPMessage.js';
 import type RoomId from '@icalingua/types/RoomId.js';
-import { BigIntType, Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
+import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
+import { nanoid } from 'nanoid';
 
 /** 消息 */
 @Entity()
 @Unique({ properties: ['roomId', 'seq', 'rand', 'time'] })
 export default class Message {
-  @PrimaryKey({ autoincrement: true, type: BigIntType, unsigned: true })
-  id!: string;
+  @PrimaryKey()
+  id = nanoid();
 
   @Index()
   @Property()

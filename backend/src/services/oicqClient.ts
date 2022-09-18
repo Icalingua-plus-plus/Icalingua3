@@ -42,7 +42,7 @@ const oicqInit = async () => {
     oicqClient = new ObservableClient(configProvider.config.qid, {
       platform: 2,
       data_dir: oicqDataPath,
-      log_level: 'off',
+      log_level: 'warn',
     });
     await oicqClient.login(configProvider.config.password);
     status.loggedIn = true;

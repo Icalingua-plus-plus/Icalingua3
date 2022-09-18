@@ -1,5 +1,5 @@
 <template>
-  <main class="block max-w-sm lg:max-w-[1280px] p-4 my-0 mx-auto">
+  <AppContainer>
     <h1 class="text-4xl text-center mb-2">Icalingua</h1>
     <form class="rounded border-2 border-dashed border-green-400 p-2 flex flex-col gap-2">
       <label class="flex items-center gap-2" for="address">
@@ -32,7 +32,7 @@
         <button class="px-2 py-1 border-2 rounded" @click="handleClick">登录</button>
       </div>
     </form>
-  </main>
+  </AppContainer>
 </template>
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
@@ -40,6 +40,7 @@ import { ref } from 'vue';
 import useRR from '../hooks/useRR';
 import axiosClient from '../services/axiosClient';
 import clientSocket from '../services/ClientSocket';
+import AppContainer from '../components/AppContainer.vue';
 
 const { route, router } = useRR();
 const formValue = useStorage('il-serverInfo', {

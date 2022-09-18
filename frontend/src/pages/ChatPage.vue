@@ -1,6 +1,6 @@
 <template>
   <AppContainer>
-    <main ref="listRef" class="flex flex-col gap-2 max-h-screen max-w-screen overflow-scroll">
+    <main ref="listRef" class="flex flex-col gap-2 max-h-screen w-full overflow-scroll">
       <div
         v-for="message in messages"
         :key="message.id"

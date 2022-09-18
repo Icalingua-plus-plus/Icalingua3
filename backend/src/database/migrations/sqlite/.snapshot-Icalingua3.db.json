@@ -80,12 +80,12 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "bigint",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
           "nullable": false,
-          "mappedType": "bigint"
+          "mappedType": "text"
         },
         "room_id": {
           "name": "room_id",
