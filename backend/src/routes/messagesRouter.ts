@@ -62,10 +62,10 @@ const messagesRouter = async (server: FastifyInstance) => {
     async (req, res) => {
       const { roomId, chunk } = req.params;
       const seqGte = chunk * 20;
-      const seqLte = seqGte + 20;
+      const seqLt = seqGte + 20;
       let [messages, count] = await getEM().findAndCount(
         Message,
-        { seq: { $gte: seqGte, $lte: seqLte }, roomId },
+        { seq: { $gte: seqGte, $lt: seqLt }, roomId },
         { orderBy: { time: 'DESC' } },
       );
       if (count < 20) {
@@ -74,7 +74,7 @@ const messagesRouter = async (server: FastifyInstance) => {
       }
       [messages, count] = await getEM().findAndCount(
         Message,
-        { seq: { $gte: seqGte, $lte: seqLte }, roomId },
+        { seq: { $gte: seqGte, $lt: seqLt }, roomId },
         { orderBy: { time: 'DESC' } },
       );
       const oicqMessages = messages.reverse().map(messageParse);
