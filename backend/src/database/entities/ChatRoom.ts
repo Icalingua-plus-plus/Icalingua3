@@ -1,6 +1,7 @@
 import { Entity, Index, PrimaryKey, Property } from '@mikro-orm/core';
 import { Discuss, Friend, Group, User } from 'oicq';
-import type RoomId from '@icalingua/types/RoomId.js';
+// eslint-disable-next-line import/no-named-default
+import type { default as RoomId } from '@icalingua/types/RoomId.js';
 
 /** 聊天室（包括私聊、群聊和讨论组） */
 @Entity()
@@ -8,7 +9,7 @@ export default class ChatRoom {
   @PrimaryKey()
   @Property()
   @Index()
-  roomId!: RoomId.default;
+  roomId!: RoomId;
 
   @Property()
   name!: string;

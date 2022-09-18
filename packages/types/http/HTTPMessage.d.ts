@@ -12,6 +12,8 @@ export interface IMessageQs {
   timeGte?: number;
   /** 数量限制 */
   limit?: number;
+  /** 被艾特 */
+  confirmed?: boolean;
 }
 
 export type EMessage = PrivateMessage | GroupMessage | DiscussMessage;
@@ -20,5 +22,5 @@ export type MessageItem = EMessage & { avatar: string | null; id: string; roomId
 
 export interface IMessageRes {
   messages: MessageItem[];
-  totalCount: number;
+  count: number;
 }

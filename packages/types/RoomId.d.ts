@@ -1,3 +1,5 @@
-type RoomId = `${'group' | 'discuss' | 'private'}-${string}`;
+export type RoomType = 'group' | 'discuss' | 'private';
+
+type RoomId = `${RoomType}-${string}`;
 
 export default RoomId;

@@ -16,15 +16,17 @@
     "@vueuse/core": "^9.2.0",
     "axios": "^0.27.2",
     "js-base64": "^3.7.2",
+    "lodash.debounce": "^4.0.8",
     "socket.io-client": "^4.5.2",
-    "vue": "^3.2.38",
+    "vue": "^3.2.39",
     "vue-router": "^4.1.5"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.7",
     "@vitejs/plugin-vue": "^3.1.0",
-    "typescript": "^4.8.2",
-    "vite": "^3.1.0",
-    "vite-plugin-windicss": "^1.8.7",
-    "vue-tsc": "^0.40.9"
+    "typescript": "^4.8.3",
+    "vite": "^3.1.1",
+    "vite-plugin-windicss": "^1.8.8",
+    "vue-tsc": "^0.40.13"
   }
 }

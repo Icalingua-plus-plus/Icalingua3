@@ -1,6 +1,6 @@
 <template>
   <AppContainer>
-    <main class="flex flex-col gap-2">
+    <main ref="listRef" class="flex flex-col gap-2 max-h-screen max-w-screen overflow-scroll">
       <div
         v-for="message in messages"
         :key="message.id"
@@ -23,23 +23,49 @@
 <script setup lang="ts">
 import { MessageItem } from '@icalingua/types/http/HTTPMessage';
 import RoomId from '@icalingua/types/RoomId';
+import calculateChunk from '@icalingua/utils/calculateChunk';
+import parseRoomId from '@icalingua/utils/parseRoomId';
 import parseUnixTime from '@icalingua/utils/parseUnixTime';
-import { ref, watchEffect } from 'vue';
+import { useScroll } from '@vueuse/core';
+import debounce from 'lodash.debounce';
+import { onMounted, ref, watchEffect } from 'vue';
 import defaultRoom from '../assets/defaultRoom.png';
 import AppContainer from '../components/AppContainer.vue';
 import useRR from '../hooks/useRR';
 import clientSocket from '../services/ClientSocket';
-import { getMessages } from '../services/messages';
+import { getMessages, getMessagesByChunk } from '../services/messages';
 
 const { route } = useRR();
 const { roomId } = route.params as { roomId: RoomId };
 const messages = ref<MessageItem[]>([]);
+/** 聊天列表元素引用 */
+const listRef = ref<HTMLDivElement>();
+const { arrivedState } = useScroll(listRef);
 clientSocket.onMessage.subscribe((msg) => {
   if (msg.roomId === roomId) messages.value.push(msg);
 });
-watchEffect(async () => {
+onMounted(async () => {
   const res = await getMessages(roomId);
   console.log(res);
   messages.value = res.messages;
+});
+watchEffect(async () => {
+  if (arrivedState.top && messages.value.length !== 0) {
+    debounce(
+      async () => {
+        const { roomType } = parseRoomId(roomId);
+        let res;
+        if (roomType === 'private') {
+          res = await getMessages(roomId, { seqLte: messages.value[0].seq });
+        } else {
+          res = await getMessagesByChunk(roomId, calculateChunk(messages.value[0].seq) - 1);
+        }
+        console.log(res);
+        messages.value = res.messages.concat(messages.value as MessageItem[]);
+      },
+      500,
+      { trailing: true },
+    )();
+  }
 });
 </script>
