@@ -24,11 +24,17 @@ const needLogin: NavigationGuardWithThis<undefined> = (to) => {
 
 const routes: RouteRecordRaw[] = [
   { path: '/login', component: LoginPage },
-  { path: '/', component: ChatRoomsPage, beforeEnter: needLogin },
+  {
+    path: '/',
+    component: ChatRoomsPage,
+    beforeEnter: needLogin,
+    children: [
+      { path: 'discuss/:roomId', component: GroupChatPage, beforeEnter: needLogin },
+      { path: 'private/:roomId', component: ChatPage, beforeEnter: needLogin },
+      { path: 'group/:roomId', component: GroupChatPage, beforeEnter: needLogin },
+    ],
+  },
   { path: '/config', component: ConfigPage, beforeEnter: needLogin },
-  { path: '/discuss/:roomId', component: GroupChatPage, beforeEnter: needLogin },
-  { path: '/private/:roomId', component: ChatPage, beforeEnter: needLogin },
-  { path: '/group/:roomId', component: GroupChatPage, beforeEnter: needLogin },
 ];
 
 const router = createRouter({ history: createWebHistory(), routes });
