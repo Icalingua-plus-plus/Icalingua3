@@ -1,27 +1,28 @@
 <template>
   <AppContainer>
-    <main class="flex gap-2 h-screen">
+    <main class="flex gap-2 h-[90vh]">
       <ul class="flex flex-col gap-2 flex-grow-1 flex-shrink-0 h-full w-[30%] overflow-scroll">
         <RouterLink
           v-for="room in rooms"
           :key="room.roomId"
           class="flex gap-2 items-center shadow rounded-md p-2"
-          :to="`/${parseRoomId(room.roomId).roomType}/${room.roomId}`"
+          :to="`/chat/${room.roomId}`"
         >
-          <div
-            :style="{ 'background-image': `url(${room.avatar || defaultRoom})` }"
+          <img
+            :src="room.avatar || defaultRoom"
             class="h-16 w-16 bg-center bg-cover rounded-full flex-shrink-0"
             :alt="`Avatar of ${room.name}`"
           />
           <div class="flex flex-col flex-grow">
-            <p class="text-lg">{{ room.name }}</p>
-            <p class="text-gray-400 break-all">{{ room.lastMessage }}</p>
-            <p v-if="room.lastMessageTime" class="text-gray-300 text-sm">
+            <p>{{ room.name }}</p>
+            <p class="text-gray-400 break-all text-sm">{{ room.lastMessage }}</p>
+            <p v-if="room.lastMessageTime" class="text-gray-300 text-xs">
               {{ parseUnixTime(room.lastMessageTime) }}
             </p>
           </div>
         </RouterLink>
       </ul>
+      <!--这里放聊天内容-->
       <RouterView class="flex-grow-[2]" />
     </main>
   </AppContainer>
@@ -29,7 +30,6 @@
 <script setup lang="ts">
 import type { ChatRoomsResItem } from '@icalingua/types/http/ChatRoomsRes';
 import type RoomId from '@icalingua/types/RoomId';
-import parseRoomId from '@icalingua/utils/parseRoomId';
 import parseUnixTime from '@icalingua/utils/parseUnixTime';
 import { onMounted, ref, watchEffect } from 'vue';
 import { RouterLink } from 'vue-router';

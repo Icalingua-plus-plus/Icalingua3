@@ -13,8 +13,6 @@ const ConfigPage = () => import('./pages/ConfigPage.vue');
 const ChatRoomsPage = () => import('./pages/ChatRoomsPage.vue');
 /** 聊天页面 */
 const ChatPage = () => import('./pages/ChatPage.vue');
-/** 群聊页面 */
-const GroupChatPage = () => import('./pages/GroupChatPage.vue');
 
 /** 路由守卫，带有该守卫的页面需要登录 */
 const needLogin: NavigationGuardWithThis<undefined> = (to) => {
@@ -28,11 +26,7 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: ChatRoomsPage,
     beforeEnter: needLogin,
-    children: [
-      { path: 'discuss/:roomId', component: GroupChatPage, beforeEnter: needLogin },
-      { path: 'private/:roomId', component: ChatPage, beforeEnter: needLogin },
-      { path: 'group/:roomId', component: GroupChatPage, beforeEnter: needLogin },
-    ],
+    children: [{ path: 'chat/:roomId', component: ChatPage, beforeEnter: needLogin }],
   },
   { path: '/config', component: ConfigPage, beforeEnter: needLogin },
 ];
