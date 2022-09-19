@@ -1,7 +1,11 @@
 import path from 'path';
 import fs from 'node:fs';
+import os from 'node:os';
 
-const root = path.join(path.dirname(import.meta.url.replace('file:///', '')), '../../../');
+const replaceStr = os.platform() === 'win32' ? 'file:///' : 'file://';
+const fileUrl = import.meta.url.replace(replaceStr, '');
+const root = path.join(path.dirname(fileUrl), '../../../');
+
 export const staticPath = path.join(root, 'static');
 const migrationPath = path.join(root, 'backend', 'src', 'database', 'migrations');
 export const sqliteMigrationPath = path.resolve(migrationPath, 'sqlite');
