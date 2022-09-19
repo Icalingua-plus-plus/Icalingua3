@@ -8,9 +8,9 @@ importers:
       '@icalingua/frontend': workspace:*
       '@icalingua/types': workspace:*
       '@icalingua/utils': workspace:*
-      '@types/lodash': ^4.14.185
       '@typescript-eslint/eslint-plugin': ^5.34.0
       '@typescript-eslint/parser': ^5.34.0
+      axios: ^0.27.2
       date-fns: ^2.29.2
       eslint: ^8.22.0
       eslint-config-airbnb-base: ^15.0.0
@@ -23,7 +23,6 @@ importers:
       eslint-plugin-vuejs-accessibility: ^1.2.0
       husky: ^8.0.0
       lint-staged: ^13.0.3
-      lodash: ^4.17.21
       oicq: ^2.3.1
       prettier: ^2.7.1
       rxjs: ^7.5.6
@@ -34,12 +33,11 @@ importers:
       '@icalingua/frontend': link:frontend
       '@icalingua/types': link:packages/types
       '@icalingua/utils': link:packages/utils
+      axios: 0.27.2
       date-fns: 2.29.2
-      lodash: 4.17.21
       oicq: 2.3.1
       rxjs: 7.5.6
     devDependencies:
-      '@types/lodash': 4.14.185
       '@typescript-eslint/eslint-plugin': 5.34.0_euudt5oqhhodkyae5tf6wjmsda
       '@typescript-eslint/parser': 5.34.0_4rv7y5c6xz3vfxwhbrcxxi73bq
       eslint: 8.22.0
@@ -116,7 +114,6 @@ importers:
       '@types/lodash.debounce': ^4.0.7
       '@vitejs/plugin-vue': ^3.1.0
       '@vueuse/core': ^9.2.0
-      axios: ^0.27.2
       js-base64: ^3.7.2
       lodash.debounce: ^4.0.8
       socket.io-client: ^4.5.2
@@ -131,7 +128,6 @@ importers:
       '@jsonforms/vue': 3.0.0-rc.1_26f3soafgewcmmzx4x5eejks3q
       '@jsonforms/vue-vanilla': 3.0.0-rc.1_vv2pzs2n3a72nw3amwufl3wzai
       '@vueuse/core': 9.2.0_vue@3.2.39
-      axios: 0.27.2
       js-base64: 3.7.2
       lodash.debounce: 4.0.8
       socket.io-client: 4.5.2

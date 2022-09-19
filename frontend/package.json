@@ -14,7 +14,6 @@
     "@jsonforms/vue": "^3.0.0-rc.1",
     "@jsonforms/vue-vanilla": "^3.0.0-rc.1",
     "@vueuse/core": "^9.2.0",
-    "axios": "^0.27.2",
     "js-base64": "^3.7.2",
     "lodash.debounce": "^4.0.8",
     "socket.io-client": "^4.5.2",

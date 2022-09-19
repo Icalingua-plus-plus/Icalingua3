@@ -1,4 +1,11 @@
-import { Client, Config, DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent } from 'oicq';
+import {
+  Client,
+  Config,
+  DiscussMessageEvent,
+  GroupMessageEvent,
+  PrivateMessage,
+  PrivateMessageEvent,
+} from 'oicq';
 import { Observable } from 'rxjs';
 import { oicqDataPath } from '../utils/pathUtils.js';
 import configProvider from './configProvider.js';
@@ -16,10 +23,16 @@ export class ObservableClient extends Client {
     this.onSystemOnline = new Observable<void>((subscriber) => {
       this.on('system.online', () => subscriber.next());
     });
+    this.onSyncMessage = new Observable<PrivateMessage>((subscriber) => {
+      this.on('sync.message', (e) => subscriber.next(e));
+    });
   }
 
   /** 收到消息 */
   onMessage: Observable<PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent>;
+
+  /** 私聊消息同步 */
+  onSyncMessage: Observable<PrivateMessage>;
 
   /** 登录成功 */
   onSystemOnline: Observable<void>;

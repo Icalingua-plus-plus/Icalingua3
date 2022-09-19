@@ -20,6 +20,9 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:3000/',
       },
+      '/cors': {
+        target: 'http://localhost:3000/',
+      },
       '/socket.io/': {
         target: 'http://localhost:3000/',
         // rewrite: (path) => path.replace('socket.io', 'socket.io/'),

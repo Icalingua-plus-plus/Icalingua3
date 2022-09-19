@@ -16,7 +16,6 @@ import type { ObservableClient } from './oicqClient.js';
 const registerMessageHandler = (oicqClient: ObservableClient) => {
   oicqClient.onSystemOnline.subscribe(() => {
     logger.info('oicq logged in');
-    oicqClient.emit('sync.message');
   });
 
   /** 把消息存数据库里 */

@@ -3,6 +3,7 @@ import { fastify } from 'fastify';
 import fastifyIO from 'fastify-socket.io';
 import winstonLogger from '../plugins/winstonLogger.js';
 import apiRouter from '../routes/apiRouter.js';
+import corsRouter from '../routes/corsRouter.js';
 import { staticPath } from '../utils/pathUtils.js';
 
 const server = fastify({ logger: true });
@@ -11,6 +12,7 @@ server.register(fastifyIO.default, {
 });
 server.register(fastifyStatic, { root: staticPath });
 server.register(winstonLogger);
+server.register(corsRouter, { prefix: '/cors' });
 server.register(apiRouter, { prefix: '/api' });
 server.setNotFoundHandler((req, res) => {
   if (req.url.startsWith('/api')) {

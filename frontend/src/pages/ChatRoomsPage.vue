@@ -5,7 +5,7 @@
         v-for="room in rooms"
         :key="room.roomId"
         class="flex gap-2 items-center shadow rounded-md p-2"
-        :to="`/chat/${room.roomId}`"
+        :to="`/${parseRoomId(room.roomId).roomType}/${room.roomId}`"
       >
         <div
           :style="{ 'background-image': `url(${room.avatar || defaultRoom})` }"
@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import type { ChatRoomsResItem } from '@icalingua/types/http/ChatRoomsRes';
 import type RoomId from '@icalingua/types/RoomId';
+import parseRoomId from '@icalingua/utils/parseRoomId';
 import parseUnixTime from '@icalingua/utils/parseUnixTime';
 import { onMounted, ref, watchEffect } from 'vue';
 import { RouterLink } from 'vue-router';

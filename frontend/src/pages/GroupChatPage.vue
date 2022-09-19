@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import { MessageItem as HTTPMessageItem } from '@icalingua/types/http/HTTPMessage';
 import RoomId from '@icalingua/types/RoomId';
+import calculateChunk from '@icalingua/utils/calculateChunk';
 import parseUnixTime from '@icalingua/utils/parseUnixTime';
 import { useScroll } from '@vueuse/core';
 import debounce from 'lodash.debounce';
@@ -38,7 +39,7 @@ import AppContainer from '../components/AppContainer.vue';
 import MessageItem from '../components/message/MessageItem.vue';
 import useRR from '../hooks/useRR';
 import clientSocket from '../services/ClientSocket';
-import { getMessages } from '../services/messages';
+import { getMessages, getMessagesByChunk } from '../services/messages';
 
 const { route } = useRR();
 const { roomId } = route.params as { roomId: RoomId };
@@ -58,7 +59,7 @@ watchEffect(async () => {
   if (arrivedState.top && messages.value.length !== 0) {
     debounce(
       async () => {
-        const res = await getMessages(roomId, { seqLte: messages.value[0].seq });
+        const res = await getMessagesByChunk(roomId, calculateChunk(messages.value[0].seq) - 1);
         console.log(res);
         messages.value = res.messages.concat(messages.value as HTTPMessageItem[]);
       },
