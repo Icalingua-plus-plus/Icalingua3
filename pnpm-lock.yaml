@@ -118,10 +118,12 @@ importers:
       '@jsonforms/vue': ^3.0.0-rc.1
       '@jsonforms/vue-vanilla': ^3.0.0-rc.1
       '@types/lodash.debounce': ^4.0.7
+      '@types/lodash.uniqby': ^4.7.7
       '@vitejs/plugin-vue': ^3.1.0
       '@vueuse/core': ^9.2.0
       js-base64: ^3.7.2
       lodash.debounce: ^4.0.8
+      lodash.uniqby: ^4.7.0
       socket.io-client: ^4.5.2
       typescript: ^4.8.3
       vite: ^3.1.1
@@ -136,11 +138,13 @@ importers:
       '@vueuse/core': 9.2.0_vue@3.2.39
       js-base64: 3.7.2
       lodash.debounce: 4.0.8
+      lodash.uniqby: 4.7.0
       socket.io-client: 4.5.2
       vue: 3.2.39
       vue-router: 4.1.5_vue@3.2.39
     devDependencies:
       '@types/lodash.debounce': 4.0.7
+      '@types/lodash.uniqby': 4.7.7
       '@vitejs/plugin-vue': 3.1.0_vite@3.1.1+vue@3.2.39
       typescript: 4.8.3
       vite: 3.1.1
@@ -851,6 +855,12 @@ packages:
 
   /@types/lodash.debounce/4.0.7:
     resolution: {integrity: sha512-X1T4wMZ+gT000M2/91SYj0d/7JfeNZ9PeeOldSNoE/lunLeQXKvkmIumI29IaKMotU/ln/McOIvgzZcQ/3TrSA==}
+    dependencies:
+      '@types/lodash': 4.14.185
+    dev: true
+
+  /@types/lodash.uniqby/4.7.7:
+    resolution: {integrity: sha512-sv2g6vkCIvEUsK5/Vq17haoZaisfj2EWW8mP7QWlnKi6dByoNmeuHDDXHR7sabuDqwO4gvU7ModIL22MmnOocg==}
     dependencies:
       '@types/lodash': 4.14.185
     dev: true
@@ -3514,6 +3524,10 @@ packages:
 
   /lodash.merge/4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+
+  /lodash.uniqby/4.7.0:
+    resolution: {integrity: sha512-e/zcLx6CSbmaEgFHCA7BnoQKyCtKMxnuWrJygbwPs/AIn+IMKl66L8/s+wBUn5LRw2pZx3bUHibiV1b6aTWIww==}
+    dev: false
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}

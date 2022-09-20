@@ -6,6 +6,7 @@
       :key="index.toString()"
       :message="message"
       :nickname="message.nickname"
+      :uin="message.user_id"
     />
   </article>
 </template>

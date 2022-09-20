@@ -14,6 +14,7 @@
         :key="message.id"
         :message="(message as HTTPMessageItem)"
         :nickname="message.sender.nickname"
+        :uin="message.sender.user_id"
       />
     </article>
   </div>
@@ -26,6 +27,7 @@ import calculateChunk from '@icalingua/utils/calculateChunk';
 import parseRoomId from '@icalingua/utils/parseRoomId';
 import { useScroll } from '@vueuse/core';
 import debounce from 'lodash.debounce';
+import uniqBy from 'lodash.uniqby';
 import { computed, ref, watchEffect } from 'vue';
 import defaultRoom from '../assets/defaultRoom.png';
 import MessageElement from '../components/MessageElement.vue';
@@ -70,7 +72,10 @@ watchEffect(async () => {
           res = await getMessages(roomId.value, { seqLte: messages.value[0].seq });
         }
         console.log(res);
-        messages.value = res.messages.concat(messages.value as HTTPMessageItem[]);
+        messages.value = uniqBy(
+          res.messages.concat(messages.value as HTTPMessageItem[]),
+          (a) => `${a.seq}${a.time}`,
+        );
       },
       500,
       { trailing: true },

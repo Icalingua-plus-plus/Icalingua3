@@ -1,31 +1,33 @@
 <template>
-  <AppContainer>
-    <main class="flex gap-2 h-[90vh]">
-      <ul class="flex flex-col gap-2 flex-grow-1 flex-shrink-0 h-full w-[30%] overflow-scroll">
+  <main
+    class="flex-grow flex-shrink flex mx-auto max-w-sm my-0 min-h-0 p-4 gap-2 xl:max-w-[1280px]"
+  >
+    <ul class="flex flex-col h-full flex-grow-1 flex-shrink-0 w-[30%] gap-2 overflow-scroll">
+      <li v-for="room in rooms" :key="room.roomId">
         <RouterLink
-          v-for="room in rooms"
-          :key="room.roomId"
-          class="flex gap-2 items-center shadow rounded-md p-2"
+          class="rounded-md flex shadow max-w-[100%] p-2 gap-2 items-center"
           :to="`/chat/${room.roomId}`"
         >
           <img
             :src="room.avatar || defaultRoom"
-            class="h-16 w-16 bg-center bg-cover rounded-full flex-shrink-0"
+            class="bg-center bg-cover rounded-full flex-shrink-0 h-16 w-16"
             :alt="`Avatar of ${room.name}`"
           />
-          <div class="flex flex-col flex-grow">
+          <div class="flex flex-col flex-grow flex-shrink min-w-0">
             <p>{{ room.name }}</p>
-            <p class="text-gray-400 break-all text-sm">{{ room.lastMessage }}</p>
-            <p v-if="room.lastMessageTime" class="text-gray-300 text-xs">
+            <p class="text-sm text-gray-400 truncate break-all">
+              {{ room.lastMessage }}
+            </p>
+            <p v-if="room.lastMessageTime" class="text-xs text-gray-300">
               {{ parseUnixTime(room.lastMessageTime) }}
             </p>
           </div>
         </RouterLink>
-      </ul>
-      <!--这里放聊天内容-->
-      <RouterView class="flex-grow-[2]" />
-    </main>
-  </AppContainer>
+      </li>
+    </ul>
+    <!--这里放聊天内容-->
+    <RouterView class="flex-grow-[2]" />
+  </main>
 </template>
 <script setup lang="ts">
 import type { ChatRoomsResItem } from '@icalingua/types/http/ChatRoomsRes';
@@ -34,7 +36,7 @@ import parseUnixTime from '@icalingua/utils/parseUnixTime';
 import { onMounted, ref, watchEffect } from 'vue';
 import { RouterLink } from 'vue-router';
 import defaultRoom from '../assets/defaultRoom.png';
-import AppContainer from '../components/AppContainer.vue';
+import { refreshMyInfo } from '../hooks/useMyInfo';
 import axiosClient from '../services/axiosClient';
 import getChatRooms, { getChatRoom } from '../services/chatRoom';
 import clientSocket from '../services/ClientSocket';
@@ -43,6 +45,7 @@ const rooms = ref<ChatRoomsResItem[]>([]);
 watchEffect(async () => {
   if (axiosClient.loggedIn) {
     rooms.value = await getChatRooms();
+    await refreshMyInfo();
   }
 });
 onMounted(async () => {
