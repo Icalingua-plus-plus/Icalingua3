@@ -40,7 +40,6 @@ const registerRouter = async (server: FastifyInstance) => {
         id: authenticator.credentialID,
         type: 'public-key',
       })),
-      authenticatorSelection: { requireResidentKey: false, userVerification: 'discouraged' },
     });
     passwordSecretUtils.setCurrentChallenge(options.challenge);
     res.send(options);
