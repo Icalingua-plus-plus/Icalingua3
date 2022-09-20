@@ -13,6 +13,8 @@ const ConfigPage = () => import('./pages/ConfigPage.vue');
 const ChatRoomsPage = () => import('./pages/ChatRoomsPage.vue');
 /** 聊天页面 */
 const ChatPage = () => import('./pages/ChatPage.vue');
+/** 合并转发消息页面 */
+const ForwardMsgPage = () => import('./pages/ForwardMsgPage.vue');
 
 /** 路由守卫，带有该守卫的页面需要登录 */
 const needLogin: NavigationGuardWithThis<undefined> = (to) => {
@@ -26,7 +28,10 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: ChatRoomsPage,
     beforeEnter: needLogin,
-    children: [{ path: 'chat/:roomId', component: ChatPage, beforeEnter: needLogin }],
+    children: [
+      { path: 'chat/:roomId', component: ChatPage, beforeEnter: needLogin },
+      { path: 'fwd/:resId', component: ForwardMsgPage, beforeEnter: needLogin },
+    ],
   },
   { path: '/config', component: ConfigPage, beforeEnter: needLogin },
 ];

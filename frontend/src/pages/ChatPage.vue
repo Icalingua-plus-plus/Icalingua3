@@ -49,7 +49,10 @@ import { getMessages, getMessagesByChunk } from '../services/messages';
 
 const { route } = useRR();
 const roomId = computed(() => route.params.roomId as RoomId);
-const roomType = computed(() => parseRoomId(roomId.value).roomType);
+const roomType = computed(() => {
+  if (!roomId.value) return null;
+  return parseRoomId(roomId.value).roomType;
+});
 
 const messages = ref<HTTPMessageItem[]>([]);
 /** 聊天列表元素引用 */
@@ -62,12 +65,14 @@ clientSocket.onMessage.subscribe((msg) => {
 });
 
 watchEffect(async () => {
+  if (!roomId.value) return;
   const [res, roomRes] = await Promise.all([getMessages(roomId.value), getChatRoom(roomId.value)]);
   console.log(res);
   messages.value = res.messages;
   roomInfo.value = roomRes;
 });
 watchEffect(async () => {
+  if (!roomType.value) return;
   if (arrivedState.top && messages.value.length !== 0) {
     debounce(
       async () => {

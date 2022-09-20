@@ -1,6 +1,5 @@
-import { FastifyInstance } from 'fastify';
 import axios from 'axios';
-import logger from '../utils/logger.js';
+import { FastifyInstance } from 'fastify';
 
 /** 绕过 QQ 图片防盗链 */
 const corsRouter = async (server: FastifyInstance) => {
@@ -9,7 +8,6 @@ const corsRouter = async (server: FastifyInstance) => {
       responseType: 'arraybuffer',
       headers: { accept: req.headers.accept! },
     });
-    logger.info(JSON.stringify(file.headers));
     res
       .header('Content-Type', file.headers['content-type'])
       .header('Cache-Control', file.headers['cache-control'])

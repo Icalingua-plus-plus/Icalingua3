@@ -1,3 +1,4 @@
+import type HTTPForwardMessage from '@icalingua/types/http/HTTPForwardMessage.js';
 import type { IMessageQs, IMessageRes } from '@icalingua/types/http/HTTPMessage.js';
 import type RoomId from '@icalingua/types/RoomId.js';
 import calculateChunk from '@icalingua/utils/calculateChunk.js';
@@ -5,6 +6,7 @@ import { FastifyInstance } from 'fastify';
 import Message from '../database/entities/Message.js';
 import { messageParse } from '../database/parser.js';
 import { getEM } from '../database/storageProvider.js';
+import { oicqClient } from '../services/oicqClient.js';
 import getChatHistory from '../utils/getChatHistory.js';
 import logger from '../utils/logger.js';
 
@@ -82,6 +84,17 @@ const messagesRouter = async (server: FastifyInstance) => {
       return res.send(data);
     },
   );
+  /** 获取转发消息 */
+  server.get<{ Params: { resId: string } }>('/fwd/:resId', async (req, res) => {
+    if (!oicqClient) return res.status(500).send('OicqClient is not ready');
+    const { resId } = req.params;
+    const messages = await oicqClient.getForwardMsg(resId);
+    const httpMessages: HTTPForwardMessage.default[] = messages.map((message) => {
+      const avatar = oicqClient?.pickUser(message.user_id)?.getAvatarUrl() || null;
+      return Object.assign(message, { avatar });
+    });
+    return res.send(httpMessages);
+  });
 };
 
 export default messagesRouter;
