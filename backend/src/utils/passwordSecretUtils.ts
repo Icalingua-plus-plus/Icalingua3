@@ -7,10 +7,11 @@ import { passwordSecretPath } from './pathUtils.js';
 let secret = '';
 let password = '';
 let lastLogOutTime = 0;
+let currentChallenge = '';
 
 /** 保存密钥 */
 const saveKey = async () => {
-  const passwordSecretStr = JSON.stringify({ secret, password, lastLogOutTime });
+  const passwordSecretStr = JSON.stringify({ secret, password, lastLogOutTime, currentChallenge });
   await fs.writeFile(passwordSecretPath, passwordSecretStr);
 };
 
@@ -19,7 +20,7 @@ const loadKey = async () => {
   try {
     const passwordSecretStr = await fs.readFile(passwordSecretPath, 'utf-8');
     try {
-      ({ secret, password, lastLogOutTime } = JSON.parse(passwordSecretStr));
+      ({ secret, password, lastLogOutTime, currentChallenge } = JSON.parse(passwordSecretStr));
       if (!secret || password === undefined) throw new Error('Invalid password and secret file');
     } catch (e) {
       logger.error(
@@ -33,6 +34,7 @@ const loadKey = async () => {
     secret = crypto.webcrypto.randomUUID();
     password = '';
     lastLogOutTime = 0;
+    currentChallenge = '';
     await saveKey();
   }
   return { secret, password, lastLogOutTime };
@@ -68,6 +70,19 @@ const logout = async () => {
   await saveKey();
 };
 
+/** 获取当前 challenge
+ * @returns challenge
+ */
+const getCurrentChallenge = () => currentChallenge;
+
+/** 设置当前 challenge，对 WebAuthn 生效
+ * @param challenge challenge
+ */
+const setCurrentChallenge = async (challenge: string) => {
+  currentChallenge = challenge;
+  await saveKey();
+};
+
 export default {
   loadKey,
   saveKey,
@@ -75,4 +90,6 @@ export default {
   verifyPasssword,
   isValid,
   logout,
+  getCurrentChallenge,
+  setCurrentChallenge,
 };

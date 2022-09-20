@@ -26,8 +26,9 @@
           @click="showKey = true"
         />
       </label>
-      <div class="flex justify-center">
+      <div class="flex justify-center gap-2">
         <button class="px-2 py-1 border-2 rounded" @click="handleClick">登录</button>
+        <button class="px-2 py-1 border-2 rounded" @click="handleWebAuthn">WebAuthn</button>
       </div>
     </form>
   </AppContainer>
@@ -39,12 +40,24 @@ import useRR from '../hooks/useRR';
 import axiosClient from '../services/axiosClient';
 import clientSocket from '../services/ClientSocket';
 import AppContainer from '../components/AppContainer.vue';
+import { login } from '../services/webAuthn';
 
 const { route, router } = useRR();
 const address = useStorage('il-serverAddress', '');
 const token = useStorage('il-token', '');
 const password = ref('');
 const showKey = ref(!token.value);
+/** 登录后的工作 */
+const afterLogin = () => {
+  clientSocket.onMessage.subscribe((ev) => {
+    console.log(ev);
+    // eslint-disable-next-line no-new
+    new Notification(ev.sender.nickname, {
+      body: ev.raw_message,
+    });
+  });
+  router.push((route.query.to as string) || '/');
+};
 /** 登录按钮点击事件 */
 const handleClick = async (e: MouseEvent) => {
   e.preventDefault();
@@ -56,13 +69,14 @@ const handleClick = async (e: MouseEvent) => {
     token.value = res;
     clientSocket.init(address.value, res);
   }
-  clientSocket.onMessage.subscribe((ev) => {
-    console.log(ev);
-    // eslint-disable-next-line no-new
-    new Notification(ev.sender.nickname, {
-      body: ev.raw_message,
-    });
-  });
-  router.push((route.query.to as string) || '/');
+  afterLogin();
+};
+/** 通过 WebAuthn 登录 */
+const handleWebAuthn = async (e: MouseEvent) => {
+  e.preventDefault();
+  const res = await login();
+  axiosClient.changeToken(res);
+  clientSocket.init(address.value, res);
+  afterLogin();
 };
 </script>

@@ -15,6 +15,8 @@ const ChatRoomsPage = () => import('./pages/ChatRoomsPage.vue');
 const ChatPage = () => import('./pages/ChatPage.vue');
 /** 合并转发消息页面 */
 const ForwardMsgPage = () => import('./pages/ForwardMsgPage.vue');
+/** WebAuthn 密钥管理页面 */
+const WebAuthnPage = () => import('./pages/WebAuthnPage.vue');
 
 /** 路由守卫，带有该守卫的页面需要登录 */
 const needLogin: NavigationGuardWithThis<undefined> = (to) => {
@@ -34,6 +36,7 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   { path: '/config', component: ConfigPage, beforeEnter: needLogin },
+  { path: '/webAuthn', component: WebAuthnPage, beforeEnter: needLogin },
 ];
 
 const router = createRouter({ history: createWebHistory(), routes });

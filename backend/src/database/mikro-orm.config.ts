@@ -1,12 +1,13 @@
 import { Options } from '@mikro-orm/core';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
-import Message from './entities/Message.js';
-import { sqliteMigrationPath, sqliteDbPath } from '../utils/pathUtils.js';
 import logger from '../utils/logger.js';
+import { sqliteDbPath, sqliteMigrationPath } from '../utils/pathUtils.js';
+import Authenticator from './entities/Authenticator.js';
 import ChatRoom from './entities/ChatRoom.js';
+import Message from './entities/Message.js';
 
 const config: Options = {
-  entities: [Message, ChatRoom],
+  entities: [Message, ChatRoom, Authenticator],
   dbName: sqliteDbPath,
   type: 'better-sqlite',
   useBatchInserts: true,

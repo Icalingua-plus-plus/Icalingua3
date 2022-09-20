@@ -37,6 +37,7 @@
     "@mikro-orm/migrations": "^5.4.1",
     "@mikro-orm/reflection": "^5.4.1",
     "@node-rs/bcrypt": "^1.6.1",
+    "@simplewebauthn/server": "6.3.0-alpha.0",
     "colors": "^1.4.0",
     "fastify": "^4.5.3",
     "fastify-plugin": "^4.2.1",

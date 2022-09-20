@@ -8,29 +8,17 @@ import { nanoid } from 'nanoid';
 import ChatRoom from '../database/entities/ChatRoom.js';
 import { roomParse } from '../database/parser.js';
 import { getEM } from '../database/storageProvider.js';
+import needAuth from '../plugins/needAuth.js';
 import configProvider from '../services/configProvider.js';
 import { oicqClient } from '../services/oicqClient.js';
 import passwordSecretUtils from '../utils/passwordSecretUtils.js';
 import corsRouter from './corsRouter.js';
 import messagesRouter from './messagesRouter.js';
+import webAuthnRouter from './webAuthnRouter.js';
 
 /** `/api` 路由，但是需要用户登录 */
 const protectedRouter = async (server: FastifyInstance) => {
-  server.addHook('preHandler', async (req, res) => {
-    if (!req.headers.authorization) {
-      res.status(401).send('Unauthorized');
-      return;
-    }
-    try {
-      const info = await req.jwtVerify<{ iat: number; id: string }>();
-      if (!passwordSecretUtils.isValid(info.iat)) {
-        res.status(401).send('Unauthorized');
-        return;
-      }
-    } catch (e) {
-      res.status(401).send('Unauthorized');
-    }
-  });
+  server.register(needAuth);
   /** 获取聊天室列表 */
   server.get('/chatRooms', async (req, res) => {
     const rooms = await getEM().find(ChatRoom, {}, { orderBy: { lastMessageTime: 'DESC' } });
@@ -93,6 +81,7 @@ const protectedRouter = async (server: FastifyInstance) => {
 /** `/api` 路由 */
 const apiRouter = async (server: FastifyInstance) => {
   server.register(corsRouter, { prefix: '/cors' });
+  server.register(webAuthnRouter, { prefix: '/webauthn' });
   server.register(protectedRouter);
   server.post<{ Body: { password: string } }>('/login', async (req, res) => {
     const isValid = await passwordSecretUtils.verifyPasssword(req.body.password);

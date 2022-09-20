@@ -3,6 +3,76 @@
   "tables": [
     {
       "columns": {
+        "credential_id": {
+          "name": "credential_id",
+          "type": "blob",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "blob"
+        },
+        "credential_public_key": {
+          "name": "credential_public_key",
+          "type": "blob",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "blob"
+        },
+        "counter": {
+          "name": "counter",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "credential_device_type": {
+          "name": "credential_device_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "credential_backed_up": {
+          "name": "credential_backed_up",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "transports": {
+          "name": "transports",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        }
+      },
+      "name": "authenticator",
+      "indexes": [
+        {
+          "keyName": "primary",
+          "columnNames": ["credential_id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
         "room_id": {
           "name": "room_id",
           "type": "text",

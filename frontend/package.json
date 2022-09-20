@@ -13,6 +13,7 @@
     "@jsonforms/core": "^3.0.0-rc.1",
     "@jsonforms/vue": "^3.0.0-rc.1",
     "@jsonforms/vue-vanilla": "^3.0.0-rc.1",
+    "@simplewebauthn/browser": "^6.0.0",
     "@vueuse/core": "^9.2.0",
     "js-base64": "^3.7.2",
     "lodash.debounce": "^4.0.8",
