@@ -57,6 +57,7 @@ importers:
 
   backend:
     specifiers:
+      '@fastify/etag': ^4.1.0
       '@fastify/static': ^6.5.0
       '@mikro-orm/better-sqlite': ^5.4.1
       '@mikro-orm/cli': ^5.4.1
@@ -81,6 +82,7 @@ importers:
       winston: ^3.8.1
       winston-daily-rotate-file: ^4.7.1
     dependencies:
+      '@fastify/etag': 4.1.0
       '@fastify/static': 6.5.0
       '@mikro-orm/better-sqlite': 5.4.1_5ewgsxr6fnwlidf4dnd3fqxkpi
       '@mikro-orm/cli': 5.4.1_un4mrvjlv5pnxcltiwp5dw53oe
@@ -253,6 +255,12 @@ packages:
 
   /@fastify/error/3.0.0:
     resolution: {integrity: sha512-dPRyT40GiHRzSCll3/Jn2nPe25+E1VXc9tDwRAIKwFCxd5Np5wzgz1tmooWG3sV0qKgrBibihVoCna2ru4SEFg==}
+    dev: false
+
+  /@fastify/etag/4.1.0:
+    resolution: {integrity: sha512-m86DX9P4ynoIPq2/8T/FZtL/z2gMdVOiDUXxutIIFpR0iBHBvc65pl/H0pjB4ctVtQQCSi7ejPmAynNFNtO8mQ==}
+    dependencies:
+      fastify-plugin: 4.2.1
     dev: false
 
   /@fastify/fast-json-stringify-compiler/4.1.0:
