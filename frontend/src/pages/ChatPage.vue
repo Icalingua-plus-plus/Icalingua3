@@ -9,24 +9,12 @@
       {{ roomInfo?.name }}
     </h1>
     <article ref="listRef" class="flex flex-col h-full gap-2 overflow-scroll">
-      <div v-for="message in messages" :key="message.id" class="rounded-md flex gap-2 items-start">
-        <img
-          :src="message.avatar || defaultRoom"
-          class="bg-center bg-cover rounded-full flex-shrink-0 h-12 w-12"
-          :alt="`Avatar of ${message.sender.nickname}`"
-        />
-        <div class="flex flex-col flex-grow shadow p-2">
-          <p class="text-sm">{{ message.sender.nickname }}</p>
-          <div class="break-all">
-            <MessageItem
-              v-for="(msg, index) in message.message"
-              :key="index.toString()"
-              :msg="msg"
-            />
-          </div>
-          <p class="text-sm text-gray-300">{{ parseUnixTime(message.time) }}</p>
-        </div>
-      </div>
+      <MessageElement
+        v-for="message in messages"
+        :key="message.id"
+        :message="(message as HTTPMessageItem)"
+        :nickname="message.sender.nickname"
+      />
     </article>
   </div>
 </template>
@@ -36,12 +24,11 @@ import { MessageItem as HTTPMessageItem } from '@icalingua/types/http/HTTPMessag
 import RoomId from '@icalingua/types/RoomId';
 import calculateChunk from '@icalingua/utils/calculateChunk';
 import parseRoomId from '@icalingua/utils/parseRoomId';
-import parseUnixTime from '@icalingua/utils/parseUnixTime';
 import { useScroll } from '@vueuse/core';
 import debounce from 'lodash.debounce';
 import { computed, ref, watchEffect } from 'vue';
 import defaultRoom from '../assets/defaultRoom.png';
-import MessageItem from '../components/message/MessageItem.vue';
+import MessageElement from '../components/MessageElement.vue';
 import useRR from '../hooks/useRR';
 import { getChatRoom } from '../services/chatRoom';
 import clientSocket from '../services/ClientSocket';

@@ -26,6 +26,7 @@ const getChatHistory = async (roomId: RoomId.default, opt?: { chunk?: number; ti
     default:
       return Promise.resolve();
   }
+  if (messages.length === 0) return Promise.resolve();
   const msgsToInsert = messages.map((msg) => new Message(msg));
   await getEM()
     .qb(Message)

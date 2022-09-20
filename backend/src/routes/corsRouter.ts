@@ -7,6 +7,8 @@ const corsRouter = async (server: FastifyInstance) => {
     const file = await axios.default.get<Buffer>(req.query.url, {
       responseType: 'arraybuffer',
       headers: { accept: req.headers.accept! },
+      /** 需要不论什么状态都不抛错 */
+      validateStatus: () => true,
     });
     res
       .header('Content-Type', file.headers['content-type'])

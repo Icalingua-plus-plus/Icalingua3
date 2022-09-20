@@ -2,6 +2,7 @@ import { Entity, Index, PrimaryKey, Property } from '@mikro-orm/core';
 import { Discuss, Friend, Group, User } from 'oicq';
 // eslint-disable-next-line import/no-named-default
 import type { default as RoomId } from '@icalingua/types/RoomId.js';
+import logger from '../../utils/logger.js';
 
 /** 聊天室（包括私聊、群聊和讨论组） */
 @Entity()
@@ -34,6 +35,10 @@ export default class ChatRoom {
       this.roomId = `group-${item.gid}`;
       this.name = item.name || `群聊 ${item.gid}`;
     } else if (item instanceof User) {
+      if (Number.isNaN(Number(item.uid))) {
+        logger.error(item);
+        throw new Error('invalid uid');
+      }
       this.roomId = `private-${item.uid}`;
       this.name = `用户 ${item.uid}`;
     } else {

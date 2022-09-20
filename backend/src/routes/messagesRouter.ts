@@ -91,7 +91,7 @@ const messagesRouter = async (server: FastifyInstance) => {
     const messages = await oicqClient.getForwardMsg(resId);
     const httpMessages: HTTPForwardMessage.default[] = messages.map((message) => {
       const avatar = oicqClient?.pickUser(message.user_id)?.getAvatarUrl() || null;
-      return Object.assign(message, { avatar });
+      return Object.assign(message, { avatar, seq: null });
     });
     return res.send(httpMessages);
   });
