@@ -1,14 +1,21 @@
+import eTag from '@fastify/etag';
+import jwt from '@fastify/jwt';
 import fastifyStatic from '@fastify/static';
 import { fastify } from 'fastify';
 import fastifyIO from 'fastify-socket.io';
-import eTag from '@fastify/etag';
 import winstonLogger from '../plugins/winstonLogger.js';
 import apiRouter from '../routes/apiRouter.js';
+import passwordSecretUtils from '../utils/passwordSecretUtils.js';
 import { staticPath } from '../utils/pathUtils.js';
 
+const { secret } = await passwordSecretUtils.loadKey();
 const server = fastify({ logger: true });
 server.register(fastifyIO.default, {
   cors: { origin: '*' },
+});
+server.register(jwt.default, {
+  secret,
+  sign: { algorithm: 'HS256' },
 });
 server.register(fastifyStatic, { root: staticPath });
 server.register(winstonLogger);

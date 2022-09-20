@@ -11,17 +11,18 @@
         />
       </label>
       <label class="flex items-center gap-2" for="key">
-        密钥<textarea
+        密码<textarea
           v-if="showKey"
           id="key"
           v-model="formValue.key"
           class="p-2 flex-grow border-2 rounded"
+          placeholder="初次登录相当于注册"
         />
         <textarea
           v-else
           id="key"
           class="p-2 flex-grow border-2 rounded"
-          placeholder="如果你需要修改已保存的密钥，请点击这里"
+          placeholder="如果你需要修改已保存的密码，请点击这里"
           @click="
             showKey = true;
             formValue.key = '';
@@ -51,7 +52,8 @@ const showKey = ref(!formValue.value.key);
 /** 登录按钮点击事件 */
 const handleClick = async (e: MouseEvent) => {
   e.preventDefault();
-  clientSocket.init(formValue.value.address, formValue.value.key);
+  const res = await axiosClient.login(formValue.value.key);
+  clientSocket.init(formValue.value.address, res);
   clientSocket.onMessage.subscribe((ev) => {
     console.log(ev);
     // eslint-disable-next-line no-new
@@ -59,9 +61,6 @@ const handleClick = async (e: MouseEvent) => {
       body: ev.raw_message,
     });
   });
-  clientSocket.socket!.on('sendToken', (token) => {
-    axiosClient.changeToken(token);
-    router.push((route.query.to as string) || '/');
-  });
+  router.push((route.query.to as string) || '/');
 };
 </script>

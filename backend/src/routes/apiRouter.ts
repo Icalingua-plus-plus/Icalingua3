@@ -1,13 +1,16 @@
 import type { ChatRoomsResItem } from '@icalingua/types/http/ChatRoomsRes.js';
 import type IMyInfo from '@icalingua/types/http/IMyInfo.js';
+import { IAppConfig } from '@icalingua/types/IAppConfig.js';
 import type RoomId from '@icalingua/types/RoomId.js';
 import parseRoomId from '@icalingua/utils/parseRoomId.js';
 import { FastifyInstance } from 'fastify';
+import { nanoid } from 'nanoid';
 import ChatRoom from '../database/entities/ChatRoom.js';
 import { roomParse } from '../database/parser.js';
 import { getEM } from '../database/storageProvider.js';
+import configProvider from '../services/configProvider.js';
 import { oicqClient } from '../services/oicqClient.js';
-import isSocketVerified from '../utils/isSocketVerified.js';
+import passwordSecretUtils from '../utils/passwordSecretUtils.js';
 import corsRouter from './corsRouter.js';
 import messagesRouter from './messagesRouter.js';
 
@@ -18,8 +21,14 @@ const protectedRouter = async (server: FastifyInstance) => {
       res.status(401).send('Unauthorized');
       return;
     }
-    if (!(await isSocketVerified(req.headers.authorization.substring(7)))) {
-      res.status(403).send('Forbidden');
+    try {
+      const info = await req.jwtVerify<{ iat: number; id: string }>();
+      if (!passwordSecretUtils.isValid(info.iat)) {
+        res.status(401).send('Unauthorized');
+        return;
+      }
+    } catch (e) {
+      res.status(401).send('Unauthorized');
     }
   });
   /** 获取聊天室列表 */
@@ -62,6 +71,22 @@ const protectedRouter = async (server: FastifyInstance) => {
     };
     return res.send(data);
   });
+  /** 修改服务端配置 */
+  server.post<{ Body: IAppConfig }>('/config', async (req, res) => {
+    const newConfig = req.body;
+    configProvider.setConfig(newConfig);
+    await configProvider.saveConfig();
+    res.code(201).send('Created');
+  });
+  /** 获取服务端配置 */
+  server.get('/config', async (req, res) => {
+    res.send(configProvider.config);
+  });
+  /** 退出登录 */
+  server.delete('/logout', async (req, res) => {
+    await passwordSecretUtils.logout();
+    res.code(204).send('Logged out');
+  });
   server.register(messagesRouter, { prefix: '/messages' });
 };
 
@@ -69,6 +94,12 @@ const protectedRouter = async (server: FastifyInstance) => {
 const apiRouter = async (server: FastifyInstance) => {
   server.register(corsRouter, { prefix: '/cors' });
   server.register(protectedRouter);
+  server.post<{ Body: { password: string } }>('/login', async (req, res) => {
+    const isValid = await passwordSecretUtils.verifyPasssword(req.body.password);
+    if (!isValid) return res.status(401).send('Unauthorized');
+    const token = server.jwt.sign({ id: nanoid() });
+    return res.send(token);
+  });
 };
 
 export default apiRouter;

@@ -17,6 +17,16 @@ class AxiosClient {
     this.changeConfig({ headers: { Authorization: `Bearer ${token}` } });
     this.loggedIn = true;
   }
+
+  /** 登录
+   * @param password 密码
+   * @returns 登录后得到的 token
+   */
+  async login(password: string) {
+    const res = await this.client.post<string>('/login', { password });
+    this.changeToken(res.data);
+    return res.data;
+  }
 }
 
 const axiosClient = new AxiosClient();

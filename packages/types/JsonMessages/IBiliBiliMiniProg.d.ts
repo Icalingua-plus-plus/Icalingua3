@@ -1,19 +1,19 @@
 export default interface IBiliBiliMiniProg {
   app: 'com.tencent.miniapp_01';
-  appID: '100951776';
-  bthirdappforward: true;
-  bthirdappforwardforbackendswitch: true;
+  appID?: '100951776';
+  bthirdappforward?: true;
+  bthirdappforwardforbackendswitch?: true;
   config: {
-    autoSize: 0;
-    ctime: 1663581394;
-    forward: 1;
-    height: 0;
-    token: '9e4405091b9bb4126313db80c44584d4';
+    autoSize: number;
+    ctime: number;
+    forward: number;
+    height: number;
+    token: string;
     type: 'normal';
-    width: 0;
+    width: number;
   };
   desc: '';
-  extra: { app_type: 1; appid: 100951776; uin: 2919690490 };
+  extra: { app_type: 1; appid: 100951776; uin: number };
   meta: {
     detail_1: {
       appType: 0;
