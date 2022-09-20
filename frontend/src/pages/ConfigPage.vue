@@ -19,7 +19,7 @@ import { JsonForms, JsonFormsChangeEvent } from '@jsonforms/vue';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
 import { onMounted, ref } from 'vue';
 import AppContainer from '../components/AppContainer.vue';
-import clientSocket from '../services/ClientSocket';
+import { changeConfig, getConfig } from '../services/serverConfig';
 
 const renderer = Object.freeze(vanillaRenderers);
 const data = ref<IAppConfig>(
@@ -32,20 +32,17 @@ const data = ref<IAppConfig>(
     return tempConfig;
   })(),
 );
-onMounted(() => {
-  clientSocket.socket!.emit('requestConfig');
-  clientSocket.onSendConfig.subscribe((config) => {
-    data.value = config;
-  });
+onMounted(async () => {
+  data.value = await getConfig();
 });
 /** 处理表单变化 */
 const handleChange = (e: JsonFormsChangeEvent) => {
   data.value = e.data;
 };
 /** 保存配置 */
-const handleSave = (e: MouseEvent) => {
+const handleSave = async (e: MouseEvent) => {
   e.preventDefault();
-  clientSocket.socket!.emit('changeConfig', data.value);
+  await changeConfig(data.value);
 };
 </script>
 <style>
