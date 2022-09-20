@@ -1,5 +1,5 @@
 import type { DiscussMessage, GroupMessage, PrivateMessage } from 'oicq';
-import RoomId from '../RoomId';
+import { RoomId } from '../RoomId';
 
 export interface IMessageQs {
   /** seq 最大者 */

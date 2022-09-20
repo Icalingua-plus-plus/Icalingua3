@@ -1,7 +1,7 @@
 import type { ChatRoomsResItem } from '@icalingua/types/http/ChatRoomsRes.js';
 import type IMyInfo from '@icalingua/types/http/IMyInfo.js';
 import { IAppConfig } from '@icalingua/types/IAppConfig.js';
-import type RoomId from '@icalingua/types/RoomId.js';
+import type { RoomId } from '@icalingua/types/RoomId.js';
 import parseRoomId from '@icalingua/utils/parseRoomId.js';
 import { FastifyInstance } from 'fastify';
 import { nanoid } from 'nanoid';
@@ -26,7 +26,7 @@ const protectedRouter = async (server: FastifyInstance) => {
     res.send(data);
   });
   /** 获取单个聊天室信息 */
-  server.get<{ Params: { roomId: RoomId.default } }>('/chatroom/:roomId', async (req, res) => {
+  server.get<{ Params: { roomId: RoomId } }>('/chatroom/:roomId', async (req, res) => {
     if (!oicqClient) return res.status(500).send('oicqClient is not ready');
     const { roomId } = req.params;
     let room = await getEM().findOne(ChatRoom, { roomId });

@@ -1,6 +1,6 @@
 import HTTPForwardMessage from '@icalingua/types/http/HTTPForwardMessage';
 import type { IMessageQs, IMessageRes } from '@icalingua/types/http/HTTPMessage';
-import type RoomId from '@icalingua/types/RoomId';
+import type { RoomId } from '@icalingua/types/RoomId';
 import parseRoomId from '@icalingua/utils/parseRoomId';
 import axiosClient from './axiosClient';
 

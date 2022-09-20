@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { ChatRoomsResItem } from '@icalingua/types/http/ChatRoomsRes';
 import { MessageItem as HTTPMessageItem } from '@icalingua/types/http/HTTPMessage';
-import RoomId from '@icalingua/types/RoomId';
+import { RoomId } from '@icalingua/types/RoomId';
 import calculateChunk from '@icalingua/utils/calculateChunk';
 import parseRoomId from '@icalingua/utils/parseRoomId';
 import { useScroll } from '@vueuse/core';

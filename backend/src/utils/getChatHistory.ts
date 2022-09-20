@@ -1,4 +1,4 @@
-import RoomId from '@icalingua/types/RoomId.js';
+import { RoomId } from '@icalingua/types/RoomId.js';
 import parseRoomId from '@icalingua/utils/parseRoomId.js';
 import ChatRoom from '../database/entities/ChatRoom.js';
 import Message from '../database/entities/Message.js';
@@ -7,7 +7,7 @@ import { oicqClient } from '../services/oicqClient.js';
 import logger from './logger.js';
 
 /** 获取聊天室历史消息，并存入数据库 */
-const getChatHistory = async (roomId: RoomId.default, opt?: { chunk?: number; time?: number }) => {
+const getChatHistory = async (roomId: RoomId, opt?: { chunk?: number; time?: number }) => {
   if (!oicqClient) throw new Error('oicqClient is not ready');
   const { roomType, id } = parseRoomId(roomId);
   let messages;

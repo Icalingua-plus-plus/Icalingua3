@@ -1,7 +1,6 @@
 import { Entity, Index, PrimaryKey, Property } from '@mikro-orm/core';
 import { Discuss, Friend, Group, User } from 'oicq';
-// eslint-disable-next-line import/no-named-default
-import type { default as RoomId } from '@icalingua/types/RoomId.js';
+import type { RoomId } from '@icalingua/types/RoomId.js';
 import logger from '../../utils/logger.js';
 
 /** 聊天室（包括私聊、群聊和讨论组） */

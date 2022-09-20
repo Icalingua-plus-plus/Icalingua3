@@ -1,5 +1,5 @@
 import type { ChatRoomsResItem } from '@icalingua/types/http/ChatRoomsRes';
-import type RoomId from '@icalingua/types/RoomId';
+import type { RoomId } from '@icalingua/types/RoomId';
 import axiosClient from './axiosClient';
 
 /** 获取聊天室列表 */

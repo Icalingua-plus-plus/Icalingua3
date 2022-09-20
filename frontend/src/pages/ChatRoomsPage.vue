@@ -31,7 +31,7 @@
 </template>
 <script setup lang="ts">
 import type { ChatRoomsResItem } from '@icalingua/types/http/ChatRoomsRes';
-import type RoomId from '@icalingua/types/RoomId';
+import type { RoomId } from '@icalingua/types/RoomId';
 import parseUnixTime from '@icalingua/utils/parseUnixTime';
 import { onMounted, ref, watchEffect } from 'vue';
 import { RouterLink } from 'vue-router';

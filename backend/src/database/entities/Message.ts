@@ -1,5 +1,5 @@
 import type { EMessage } from '@icalingua/types/http/HTTPMessage.js';
-import type RoomId from '@icalingua/types/RoomId.js';
+import type { RoomId } from '@icalingua/types/RoomId.js';
 import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
 import { nanoid } from 'nanoid';
 
@@ -12,7 +12,7 @@ export default class Message {
 
   @Index()
   @Property()
-  roomId!: RoomId.default;
+  roomId!: RoomId;
 
   @Index()
   @Property({ unsigned: true })
@@ -44,7 +44,7 @@ export default class Message {
   content!: Buffer;
 
   constructor(message: EMessage) {
-    let roomId: RoomId.default;
+    let roomId: RoomId;
     if (message.message_type === 'private') {
       roomId = `private-${message.sender.user_id}`;
     } else if (message.message_type === 'group') {

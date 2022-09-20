@@ -1,6 +1,6 @@
 import type HTTPForwardMessage from '@icalingua/types/http/HTTPForwardMessage.js';
 import type { IMessageQs, IMessageRes } from '@icalingua/types/http/HTTPMessage.js';
-import type RoomId from '@icalingua/types/RoomId.js';
+import type { RoomId } from '@icalingua/types/RoomId.js';
 import calculateChunk from '@icalingua/utils/calculateChunk.js';
 import { FastifyInstance } from 'fastify';
 import Message from '../database/entities/Message.js';
@@ -13,7 +13,7 @@ import logger from '../utils/logger.js';
 /** `/api/messages` 路由 */
 const messagesRouter = async (server: FastifyInstance) => {
   /** 用于私聊消息的处理，因为私聊消息 seq 不连续 */
-  server.get<{ Params: { roomId: RoomId.default }; Querystring: IMessageQs }>(
+  server.get<{ Params: { roomId: RoomId }; Querystring: IMessageQs }>(
     '/:roomId',
     async (req, res) => {
       const { roomId } = req.params;
@@ -33,7 +33,7 @@ const messagesRouter = async (server: FastifyInstance) => {
     },
   );
   /** 获取一个聊天室的最新 chunk 里的消息 */
-  server.get<{ Params: { roomId: RoomId.default }; Querystring: IMessageQs }>(
+  server.get<{ Params: { roomId: RoomId }; Querystring: IMessageQs }>(
     '/:roomId/new',
     async (req, res) => {
       const { roomId } = req.params;
@@ -59,7 +59,7 @@ const messagesRouter = async (server: FastifyInstance) => {
     },
   );
   /** 按 chunk 获取聊天室的信息。分 chunk 的好处在于可以获取历史信息 */
-  server.get<{ Params: { roomId: RoomId.default; chunk: number }; Querystring: IMessageQs }>(
+  server.get<{ Params: { roomId: RoomId; chunk: number }; Querystring: IMessageQs }>(
     '/:roomId/:chunk',
     async (req, res) => {
       const { roomId, chunk } = req.params;
