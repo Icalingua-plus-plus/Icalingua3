@@ -5,7 +5,7 @@
       <label class="flex items-center gap-2" for="address">
         地址<input
           id="address"
-          v-model="formValue.address"
+          v-model="address"
           class="p-2 flex-grow border-2 rounded"
           placeholder="可留空"
         />
@@ -14,7 +14,7 @@
         密码<textarea
           v-if="showKey"
           id="key"
-          v-model="formValue.key"
+          v-model="password"
           class="p-2 flex-grow border-2 rounded"
           placeholder="初次登录相当于注册"
         />
@@ -23,10 +23,7 @@
           id="key"
           class="p-2 flex-grow border-2 rounded"
           placeholder="如果你需要修改已保存的密码，请点击这里"
-          @click="
-            showKey = true;
-            formValue.key = '';
-          "
+          @click="showKey = true"
         />
       </label>
       <div class="flex justify-center">
@@ -44,16 +41,21 @@ import clientSocket from '../services/ClientSocket';
 import AppContainer from '../components/AppContainer.vue';
 
 const { route, router } = useRR();
-const formValue = useStorage('il-serverInfo', {
-  address: '',
-  key: '',
-});
-const showKey = ref(!formValue.value.key);
+const address = useStorage('il-serverAddress', '');
+const token = useStorage('il-token', '');
+const password = ref('');
+const showKey = ref(!token.value);
 /** 登录按钮点击事件 */
 const handleClick = async (e: MouseEvent) => {
   e.preventDefault();
-  const res = await axiosClient.login(formValue.value.key);
-  clientSocket.init(formValue.value.address, res);
+  if (token.value && !password.value) {
+    axiosClient.changeToken(token.value);
+    clientSocket.init(address.value, token.value);
+  } else {
+    const res = await axiosClient.login(password.value);
+    token.value = res;
+    clientSocket.init(address.value, res);
+  }
   clientSocket.onMessage.subscribe((ev) => {
     console.log(ev);
     // eslint-disable-next-line no-new
