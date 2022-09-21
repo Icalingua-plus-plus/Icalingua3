@@ -22,6 +22,6 @@ const { route, router } = useRR();
 const resId = computed(() => (route.params as { resId: string }).resId);
 watchEffect(async () => {
   if (!resId.value) return;
-  messages.value = await getForwardMsg(resId.value);
+  messages.value = await getForwardMsg(encodeURIComponent(resId.value));
 });
 </script>

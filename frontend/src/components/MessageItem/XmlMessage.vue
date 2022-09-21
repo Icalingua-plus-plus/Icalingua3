@@ -1,7 +1,7 @@
 <template>
   <RouterLink
     v-if="res"
-    :to="`/fwd/${res.resId}`"
+    :to="`/fwd/${encodeURIComponent(res.resId)}`"
     class="rounded-md bg-light-900 w-[fit-content] block p-2 text-xs"
   >
     <p v-for="content in res.content" :key="content">{{ content }}</p>
