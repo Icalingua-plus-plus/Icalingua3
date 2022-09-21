@@ -1,8 +1,8 @@
 <template>
   <AppContainer>
-    {{ data }}
+    {{ appConfig }}
     <JsonForms
-      :data="data"
+      :data="appConfig"
       :schema="(schema as unknown as JsonSchema)"
       :renderers="renderer"
       @change="handleChange"
@@ -13,37 +13,15 @@
   </AppContainer>
 </template>
 <script setup lang="ts">
-import schema, { IAppConfig } from '@icalingua/types/IAppConfig';
+import schema from '@icalingua/types/IAppConfig';
 import JsonSchema from '@icalingua/types/JsonSchema';
-import { JsonForms, JsonFormsChangeEvent } from '@jsonforms/vue';
+import { JsonForms } from '@jsonforms/vue';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
-import { onMounted, ref } from 'vue';
 import AppContainer from '../components/AppContainer.vue';
-import { changeConfig, getConfig } from '../services/serverConfig';
+import useAppConfig, { appConfig } from '../hooks/useAppConfig';
 
 const renderer = Object.freeze(vanillaRenderers);
-const data = ref<IAppConfig>(
-  (() => {
-    const tempConfig = {} as unknown as IAppConfig;
-    const keys = Object.keys(schema.properties) as unknown as (keyof typeof schema.properties)[];
-    keys.forEach((key) => {
-      tempConfig[key] = schema.properties[key].default as never;
-    });
-    return tempConfig;
-  })(),
-);
-onMounted(async () => {
-  data.value = await getConfig();
-});
-/** 处理表单变化 */
-const handleChange = (e: JsonFormsChangeEvent) => {
-  data.value = e.data;
-};
-/** 保存配置 */
-const handleSave = async (e: MouseEvent) => {
-  e.preventDefault();
-  await changeConfig(data.value);
-};
+const { handleSave, handleChange } = useAppConfig();
 </script>
 <style>
 input.input {

@@ -112,7 +112,7 @@ const authenticationRouter = async (server: FastifyInstance) => {
       verification = await verifyAuthenticationResponse({
         credential: req.body,
         expectedChallenge: passwordSecretUtils.getCurrentChallenge(),
-        expectedOrigin: origin,
+        expectedOrigin: configProvider.config.webAuthnOrigin || origin,
         expectedRPID: rpID,
         authenticator: {
           credentialID: authenticator.credentialID,
@@ -165,6 +165,13 @@ const manageRouter = async (server: FastifyInstance) => {
       credentialID: Buffer.from(decodeURIComponent(req.query.credentialID), 'base64'),
     });
     if (!authenticator) return res.status(404).send('Not Found');
+    if (configProvider.config.onlyWebAuthn) {
+      const count = await em.count(Authenticator, {});
+      if (count === 1)
+        return res
+          .status(400)
+          .send('You can not delete the last key while onlyWebAuthn is enabled');
+    }
     await em.removeAndFlush(authenticator);
     return res.status(204).send();
   });

@@ -13,7 +13,11 @@
         <p>使用计数：{{ key.counter }}</p>
         <p>上次使用：{{ parseUnixTime(Math.floor(key.lastUsedAt / 1000)) }}</p>
         <div class="flex justify-center">
-          <mwc-icon-button class="text-red-500" @click="() => handleDelete(key.credentialID)">
+          <mwc-icon-button
+            v-if="!appConfig.onlyWebAuthn || (keys && keys.length > 1)"
+            class="text-red-500"
+            @click="() => handleDelete(key.credentialID)"
+          >
             <DeleteFilled />
           </mwc-icon-button>
         </div>
@@ -35,6 +39,7 @@ import { Icon } from '@vicons/utils';
 import { onMounted, ref } from 'vue';
 import AppContainer from '../components/AppContainer.vue';
 import { deleteKey, getKeys, register } from '../services/webAuthn';
+import { appConfig } from '../hooks/useAppConfig';
 
 const adding = ref(false);
 const keys = ref<IGetKeysRes[]>();

@@ -2,7 +2,9 @@
   <main
     class="flex-grow flex-shrink flex mx-auto max-w-sm my-0 min-h-0 p-4 gap-2 xl:max-w-[1280px]"
   >
-    <ul class="flex flex-col h-full flex-grow-1 flex-shrink-0 w-[30%] gap-2 overflow-scroll">
+    <ul
+      class="flex flex-col h-full flex-grow-1 flex-shrink-0 w-[30%] gap-2 overflow-scroll overflow-x-hidden"
+    >
       <li v-for="room in rooms" :key="room.roomId">
         <RouterLink
           class="rounded-md flex shadow max-w-[100%] p-2 gap-2 items-center"

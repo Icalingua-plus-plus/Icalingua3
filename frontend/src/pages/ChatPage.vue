@@ -8,7 +8,7 @@
       />
       {{ roomInfo?.name }}
     </h1>
-    <article ref="listRef" class="flex flex-col h-full gap-2 overflow-scroll">
+    <article ref="listRef" class="flex flex-col h-full gap-2 overflow-scroll overflow-x-hidden">
       <MessageElement
         v-for="message in messages"
         :key="message.id"
