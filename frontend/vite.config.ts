@@ -9,7 +9,7 @@ const target = ['chrome87', 'edge88', 'firefox78', 'safari14'];
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({ template: { compilerOptions: { isCustomElement: (tag) => tag.includes('-') } } }),
     WindiCSS({
       // 这个放在项目根目录是为了让 VSCode 插件能正常使用
       configFiles: ['./windi.config.ts'],

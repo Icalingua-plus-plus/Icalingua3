@@ -10,15 +10,16 @@
           placeholder="可留空"
         />
       </label>
-      <label class="flex items-center gap-2" for="key">
-        密码<textarea
+      <label class="flex items-center gap-2 sm:min-w-sm" for="key">
+        密码<input
           v-if="showKey"
           id="key"
           v-model="password"
           class="p-2 flex-grow border-2 rounded"
           placeholder="初次登录相当于注册"
+          type="password"
         />
-        <textarea
+        <input
           v-else
           id="key"
           class="p-2 flex-grow border-2 rounded"
@@ -35,11 +36,12 @@
 </template>
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
+import { AxiosError } from 'axios';
 import { ref } from 'vue';
+import AppContainer from '../components/AppContainer.vue';
 import useRR from '../hooks/useRR';
 import axiosClient from '../services/axiosClient';
 import clientSocket from '../services/ClientSocket';
-import AppContainer from '../components/AppContainer.vue';
 import { login } from '../services/webAuthn';
 
 const { route, router } = useRR();
@@ -61,22 +63,34 @@ const afterLogin = () => {
 /** 登录按钮点击事件 */
 const handleClick = async (e: MouseEvent) => {
   e.preventDefault();
-  if (token.value && !password.value) {
-    axiosClient.changeToken(token.value);
-    clientSocket.init(address.value, token.value);
-  } else {
-    const res = await axiosClient.login(password.value);
-    token.value = res;
-    clientSocket.init(address.value, res);
+  try {
+    if (token.value && !password.value) {
+      await axiosClient.changeToken(token.value);
+      clientSocket.init(address.value, token.value);
+    } else {
+      const res = await axiosClient.login(password.value);
+      token.value = res;
+      clientSocket.init(address.value, res);
+    }
+    afterLogin();
+  } catch (err) {
+    if (err instanceof AxiosError && err.response?.status === 401) {
+      alert(err.response.data);
+    }
   }
-  afterLogin();
 };
 /** 通过 WebAuthn 登录 */
 const handleWebAuthn = async (e: MouseEvent) => {
   e.preventDefault();
-  const res = await login();
-  axiosClient.changeToken(res);
-  clientSocket.init(address.value, res);
-  afterLogin();
+  try {
+    const res = await login();
+    await axiosClient.changeToken(res);
+    clientSocket.init(address.value, res);
+    afterLogin();
+  } catch (err) {
+    if (err instanceof AxiosError && err.response?.status === 401) {
+      alert(err.response.data);
+    }
+  }
 };
 </script>

@@ -19,6 +19,10 @@ import webAuthnRouter from './webAuthnRouter.js';
 /** `/api` 路由，但是需要用户登录 */
 const protectedRouter = async (server: FastifyInstance) => {
   server.register(needAuth);
+  /** 用于检测当前的 token 是否有效 */
+  server.get('/verify', async (req, res) => {
+    res.send('OK');
+  });
   /** 获取聊天室列表 */
   server.get('/chatRooms', async (req, res) => {
     const rooms = await getEM().find(ChatRoom, {}, { orderBy: { lastMessageTime: 'DESC' } });

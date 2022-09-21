@@ -13,7 +13,8 @@ class AxiosClient {
   }
 
   /** 改变 Token */
-  changeToken(token: string) {
+  async changeToken(token: string) {
+    await this.client.get('/verify', { headers: { authorization: `Bearer ${token}` } });
     this.changeConfig({ headers: { Authorization: `Bearer ${token}` } });
     this.loggedIn = true;
   }
@@ -24,7 +25,7 @@ class AxiosClient {
    */
   async login(password: string) {
     const res = await this.client.post<string>('/login', { password });
-    this.changeToken(res.data);
+    await this.changeToken(res.data);
     return res.data;
   }
 }

@@ -13,6 +13,13 @@ const schema = {
       default: 'iPad',
     },
     toast: { type: 'boolean', title: '是否开启消息通知', default: true },
+    onlyWebAuthn: { type: 'boolean', title: '是否仅使用 WebAuthn 进行登录验证', default: false },
+    webAuthnOrigin: {
+      type: 'array',
+      title: 'WebAuthn 可使用的 URL',
+      default: [],
+      items: { type: 'string', description: '例：http://localhost:5173' },
+    },
   },
 } as const;
 

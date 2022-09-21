@@ -56,10 +56,56 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "last_used_at": {
+          "name": "last_used_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "aaguid": {
+          "name": "aaguid",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "attestation_object": {
+          "name": "attestation_object",
+          "type": "blob",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "blob"
         }
       },
       "name": "authenticator",
       "indexes": [
+        {
+          "columnNames": ["aaguid"],
+          "composite": false,
+          "keyName": "authenticator_aaguid_index",
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "primary",
           "columnNames": ["credential_id"],

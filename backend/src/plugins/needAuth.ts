@@ -1,4 +1,5 @@
 import fp from 'fastify-plugin';
+import configProvider from '../services/configProvider.js';
 import passwordSecretUtils from '../utils/passwordSecretUtils.js';
 
 /** 需要登录
@@ -14,9 +15,13 @@ const needAuth = fp.default(async (server) => {
       return;
     }
     try {
-      const info = await req.jwtVerify<{ iat: number; id: string }>();
+      const info = await req.jwtVerify<{ iat: number; id: string; webAuthn?: boolean }>();
       if (!passwordSecretUtils.isValid(info.iat)) {
         res.status(401).send('Unauthorized');
+        return;
+      }
+      if (configProvider.config.onlyWebAuthn && !info.webAuthn) {
+        res.status(401).send('Server only accepts WebAuthn');
         return;
       }
     } catch (e) {

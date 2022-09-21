@@ -1,4 +1,6 @@
+import configProvider from '../services/configProvider.js';
 import server from '../services/fastifyServer.js';
+import passwordSecretUtils from './passwordSecretUtils.js';
 
 /** 验证客户端 */
 const verifyClient = async (authorization?: string) => {
@@ -6,8 +8,14 @@ const verifyClient = async (authorization?: string) => {
   const jwToken = authorization.substring(7);
   let res;
   try {
-    server.jwt.verify(jwToken);
+    const info = server.jwt.verify<{ iat: number; id: string; webAuthn?: boolean }>(jwToken);
     res = true;
+    if (!passwordSecretUtils.isValid(info.iat)) {
+      res = false;
+    }
+    if (configProvider.config.onlyWebAuthn && !info.webAuthn) {
+      res = false;
+    }
   } catch (error) {
     res = false;
   }

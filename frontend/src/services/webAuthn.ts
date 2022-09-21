@@ -1,10 +1,11 @@
+import { IGetKeysRes } from '@icalingua/types/http/IGetKeysRes';
+import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
 import {
   AuthenticationCredentialJSON,
   PublicKeyCredentialCreationOptionsJSON,
   PublicKeyCredentialRequestOptionsJSON,
   RegistrationCredentialJSON,
 } from '@simplewebauthn/typescript-types';
-import { startRegistration, startAuthentication } from '@simplewebauthn/browser';
 import axiosClient from './axiosClient';
 
 /** WebAuthn 第一个注册请求 */
@@ -67,4 +68,18 @@ export const login = async () => {
   }
   const res2 = await login2(attResp);
   return res2;
+};
+
+/** 获取服务端已保存的 WebAuthn 密钥列表 */
+export const getKeys = async () => {
+  const res = await axiosClient.client.get<IGetKeysRes[]>('/webauthn/manage');
+  return res.data;
+};
+
+/** 删除服务端的一个 WebAuthn 密钥
+ * @param id credentialID
+ */
+export const deleteKey = async (id: string) => {
+  const res = await axiosClient.client.delete('/webauthn/manage', { params: { credentialID: id } });
+  return res.data;
 };
