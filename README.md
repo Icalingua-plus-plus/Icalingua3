@@ -25,11 +25,8 @@ pnpm dev # 这条命令会同时启动前后端
 
 ## Icalingua3 身份验证
 
-:::tip
-
-这是 Icalingua3 的身份验证，不是 oicq 的身份验证，请勿混淆。
-
-:::
+> **Note**  
+> 这是 Icalingua3 的身份验证，不是 oicq 的身份验证，请勿混淆。
 
 第一次登录相当于注册，后面需要输入相同的密码。如果忘记密码，可以通过删除 `./data/passwordSecret.json` 来恢复。使用密码登录时，浏览器端会保存一个 token，下次登录可以直接点登录键，不需要重复输入密码。
 
@@ -39,11 +36,8 @@ WebAuthn 是一种新的身份验证方式，可以用于替代密码。要使�
 
 使用 WebAuthn 登录时，token 不会被存储，这意味着你每次登录都需要进行验证。
 
-:::warning
-
-在设置页勾选 `onlyWebAuthn` 之后保存，可以禁用密码登录。在禁用以前，请确保你已经添加了至少一个 WebAuthn 密钥，否则你将无法登录。如果你这么做了，请编辑 `./data/config.json`，将 `onlyWebAuthn` 设置为 `false`。
-
-:::
+> **Warning**  
+> 在设置页勾选 `onlyWebAuthn` 之后保存，可以禁用密码登录。在禁用以前，请确保你已经添加了至少一个 WebAuthn 密钥，否则你将无法登录。如果你这么做了，请编辑 `./data/config.json`，将 `onlyWebAuthn` 设置为 `false`。
 
 ## 关于官方可能的 Electron 版本
 
