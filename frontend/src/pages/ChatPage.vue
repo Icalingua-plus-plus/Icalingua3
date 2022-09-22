@@ -9,8 +9,13 @@
       {{ roomInfo?.name }}
     </h1>
     <article ref="listRef" class="flex flex-col h-full gap-2 overflow-scroll overflow-x-hidden">
+      <MessageChunk
+        v-for="info in chunksRes"
+        :key="info.currentChunk || 0"
+        :info="(info as IMessageRes)"
+      />
       <MessageElement
-        v-for="message in messages"
+        v-for="message in newMessages"
         :key="message.id"
         :message="(message as HTTPMessageItem)"
         :nickname="message.sender.nickname"
@@ -21,15 +26,15 @@
 </template>
 <script setup lang="ts">
 import { ChatRoomsResItem } from '@icalingua/types/http/ChatRoomsRes';
-import { MessageItem as HTTPMessageItem } from '@icalingua/types/http/HTTPMessage';
+import { IMessageRes, MessageItem as HTTPMessageItem } from '@icalingua/types/http/HTTPMessage';
 import { RoomId } from '@icalingua/types/RoomId';
-import calculateChunk from '@icalingua/utils/calculateChunk';
 import parseRoomId from '@icalingua/utils/parseRoomId';
 import { useScroll } from '@vueuse/core';
 import debounce from 'lodash.debounce';
 import uniqBy from 'lodash.uniqby';
 import { computed, ref, watchEffect } from 'vue';
 import defaultRoom from '../assets/defaultRoom.png';
+import MessageChunk from '../components/MessageChunk.vue';
 import MessageElement from '../components/MessageElement.vue';
 import useRR from '../hooks/useRR';
 import { getChatRoom } from '../services/chatRoom';
@@ -43,38 +48,37 @@ const roomType = computed(() => {
   return parseRoomId(roomId.value).roomType;
 });
 
-const messages = ref<HTTPMessageItem[]>([]);
+const chunksRes = ref<IMessageRes[]>([]);
+const newMessages = ref<HTTPMessageItem[]>([]);
 /** 聊天列表元素引用 */
 const listRef = ref<HTMLDivElement>();
 const { arrivedState } = useScroll(listRef);
 const roomInfo = ref<ChatRoomsResItem>();
 
 clientSocket.onMessage.subscribe((msg) => {
-  if (msg.roomId === roomId.value) messages.value.push(msg);
+  if (msg.roomId === roomId.value) newMessages.value.push(msg);
 });
 
+/** 切换聊天室时的逻辑 */
 watchEffect(async () => {
   if (!roomId.value) return;
   const [res, roomRes] = await Promise.all([getMessages(roomId.value), getChatRoom(roomId.value)]);
   console.log(res);
-  messages.value = res.messages;
+  chunksRes.value = [res];
   roomInfo.value = roomRes;
+  newMessages.value = [];
 });
+
 watchEffect(async () => {
   if (!roomType.value) return;
-  if (arrivedState.top && messages.value.length !== 0) {
+  if (arrivedState.top && chunksRes.value.length !== 0 && chunksRes.value[0].lastChunk) {
     debounce(
       async () => {
-        let res;
-        if (roomType.value !== 'private') {
-          res = await getMessagesByChunk(roomId.value, calculateChunk(messages.value[0].seq) - 1);
-        } else {
-          res = await getMessages(roomId.value, { seqLte: messages.value[0].seq });
-        }
+        const res = await getMessagesByChunk(roomId.value, chunksRes.value[0].lastChunk!);
         console.log(res);
-        messages.value = uniqBy(
-          res.messages.concat(messages.value as HTTPMessageItem[]),
-          (a) => `${a.seq}${a.time}`,
+        chunksRes.value = uniqBy(
+          [res].concat(chunksRes.value as IMessageRes[]),
+          (a) => a.currentChunk,
         );
       },
       500,

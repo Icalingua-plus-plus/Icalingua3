@@ -23,4 +23,7 @@ export type MessageItem = EMessage & { avatar: string | null; id: string; roomId
 export interface IMessageRes {
   messages: MessageItem[];
   count: number;
+  currentChunk: number | null;
+  lastChunk: number | null;
+  nextChunk: number | null;
 }
