@@ -66,3 +66,8 @@ onMounted(async () => {
   keys.value = await getKeys();
 });
 </script>
+<style scoped>
+mwc-circular-progress {
+  --mdc-theme-primary: theme('colors.green.400');
+}
+</style>
