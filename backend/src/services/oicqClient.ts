@@ -57,7 +57,25 @@ const oicqInit = async () => {
       data_dir: oicqDataPath,
       log_level: 'warn',
     });
+    oicqClient.on('system.login.qrcode', () => {
+      process.stdout.write('扫描二维码之后，按y登录');
+      process.stdin.once('data', (data) => {
+        if (data.toString().trim() === 'y') {
+          oicqClient?.login();
+        }
+      });
+    });
+    oicqClient.on('system.login.device', () => {
+      process.stdout.write(`扫描二维码之后，按y登录`);
+      process.stdin.once('data', (data) => {
+        if (data.toString().trim() === 'y') {
+          oicqClient?.login();
+        }
+      });
+    });
+
     await oicqClient.login(configProvider.config.password);
+
     status.loggedIn = true;
     registerMessageHandler(oicqClient);
   } catch (e) {
