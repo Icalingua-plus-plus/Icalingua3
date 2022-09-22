@@ -62,10 +62,11 @@ const messagesRouter = async (server: FastifyInstance) => {
     },
   );
   /** 按 chunk 获取聊天室的信息。分 chunk 的好处在于可以获取历史信息 */
-  server.get<{ Params: { roomId: RoomId; chunk: number }; Querystring: IMessageQs }>(
+  server.get<{ Params: { roomId: RoomId; chunk: string }; Querystring: IMessageQs }>(
     '/:roomId/:chunk',
     async (req, res) => {
-      const { roomId, chunk } = req.params;
+      const { roomId, chunk: oriChunk } = req.params;
+      const chunk = Number(oriChunk);
       const { roomType } = parseRoomId(roomId);
       const latestChunk = await getLatestChunk(roomId);
       if (!latestChunk)
