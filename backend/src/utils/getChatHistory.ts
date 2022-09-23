@@ -23,6 +23,8 @@ const getChatHistoryByDay = async (roomId: RoomId, chunk: number) => {
     fetchedMessages = await user.getChatHistory(timeLte);
     messages.push(...fetchedMessages);
     if (fetchedMessages.length > 0) timeLte = fetchedMessages[0].time;
+    logger.debug(JSON.stringify({ fetchedMessages, timeLte, timeGte }));
+    if (fetchedMessages.length !== 0 && fetchedMessages[0].time === timeLte) break;
   } while (fetchedMessages.length !== 0 && fetchedMessages[0].time > timeGte);
   return messages;
 };
