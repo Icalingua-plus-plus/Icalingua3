@@ -9,7 +9,7 @@
       {{ roomInfo?.name }}
     </h1>
     <VVirtualList
-      :item-size="80"
+      :item-size="88"
       :items="messages"
       item-resizable
       key-field="id"
@@ -32,7 +32,7 @@ import { RoomId } from '@icalingua/types/RoomId';
 import parseRoomId from '@icalingua/utils/parseRoomId';
 import debounce from 'lodash.debounce';
 import uniqBy from 'lodash.uniqby';
-import { computed, nextTick, reactive, ref, watchEffect } from 'vue';
+import { computed, reactive, ref, watchEffect } from 'vue';
 import { VVirtualList } from 'vueuc';
 import defaultRoom from '../assets/defaultRoom.png';
 import MessageElement from '../components/MessageElement.vue';
@@ -73,27 +73,22 @@ clientSocket.onMessage.subscribe((msg) => {
 watchEffect(async () => {
   if (!roomId.value) return;
   const [res, roomRes] = await Promise.all([getMessages(roomId.value), getChatRoom(roomId.value)]);
-  console.log(res);
   chunksRes.value = [res];
   roomInfo.value = roomRes;
   newMessages.value = [];
 });
-const loading = ref(false);
+
 watchEffect(async () => {
-  if (loading.value) return;
   if (!roomType.value) return;
   if (scrollState.arrivedTop && chunksRes.value.length !== 0 && chunksRes.value[0].lastChunk) {
     debounce(
       async () => {
-        if (loading.value) return;
         const res = await getMessagesByChunk(roomId.value, chunksRes.value[0].lastChunk!);
-        console.log(res);
         if (res.currentChunk === null) return;
         chunksRes.value = uniqBy(
           [res].concat(chunksRes.value as IMessageRes[]),
           (a) => a.currentChunk,
         );
-        await nextTick();
       },
       500,
       { trailing: true },

@@ -9,6 +9,7 @@
       'justify-start': !myInfo || myInfo?.uin !== uin,
       'justify-end': myInfo?.uin === uin,
       'min-h-20': true,
+      'pt-2': true,
     }"
   >
     <img
@@ -19,14 +20,14 @@
     />
     <!--占位-->
     <div v-else class="bg-center bg-cover rounded-full flex-shrink-0 h-12 w-12" />
-    <div class="flex flex-col shadow p-2">
-      <p class="text-sm">{{ nickname }}</p>
-      <div class="break-all">
+    <div class="flex flex-col">
+      <p :class="['text-sm', { 'text-right': myInfo?.uin === uin }]">{{ nickname }}</p>
+      <div class="break-all shadow rounded-md p-2">
         <MessageItem v-for="(msg, index) in message.message" :key="index.toString()" :msg="msg" />
+        <p class="text-sm text-gray-300">
+          {{ parseUnixTime(message.time) }} {{ message.seq ? `#${message.seq}` : '' }}
+        </p>
       </div>
-      <p class="text-sm text-gray-300">
-        {{ parseUnixTime(message.time) }} {{ message.seq ? `#${message.seq}` : '' }}
-      </p>
     </div>
     <img
       v-if="myInfo?.uin === uin"
