@@ -8,7 +8,13 @@
       />
       {{ roomInfo?.name }}
     </h1>
-    <VVirtualList :item-size="80" :items="messages" item-resizable @scroll="handleScroll">
+    <VVirtualList
+      :item-size="80"
+      :items="messages"
+      item-resizable
+      key-field="id"
+      @scroll="handleScroll"
+    >
       <template #default="{ item }: { item: HTTPMessageItem }">
         <MessageElement
           :message="item"

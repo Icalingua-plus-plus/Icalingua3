@@ -1,5 +1,6 @@
 <template>
   <div
+    :id="`message-${(message as HTTPMessageItem).id || message.seq}`"
     :class="{
       'rounded-md': true,
       flex: true,
