@@ -24,7 +24,8 @@
     "lodash.uniqby": "^4.7.0",
     "socket.io-client": "^4.5.2",
     "vue": "^3.2.39",
-    "vue-router": "^4.1.5"
+    "vue-router": "^4.1.5",
+    "vueuc": "^0.4.48"
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.7",
