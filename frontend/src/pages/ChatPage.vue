@@ -9,6 +9,7 @@
       {{ roomInfo?.name }}
     </h1>
     <VVirtualList
+      ref="listRef"
       :item-size="88"
       :items="messages"
       item-resizable
@@ -32,7 +33,7 @@ import { RoomId } from '@icalingua/types/RoomId';
 import parseRoomId from '@icalingua/utils/parseRoomId';
 import debounce from 'lodash.debounce';
 import uniqBy from 'lodash.uniqby';
-import { computed, reactive, ref, watchEffect } from 'vue';
+import { computed, nextTick, reactive, ref, watch, watchEffect } from 'vue';
 import { VVirtualList } from 'vueuc';
 import defaultRoom from '../assets/defaultRoom.png';
 import MessageElement from '../components/MessageElement.vue';
@@ -78,8 +79,12 @@ watchEffect(async () => {
   newMessages.value = [];
 });
 
-watchEffect(async () => {
+/** 消息列表引用 */
+const listRef = ref<InstanceType<typeof VVirtualList>>();
+
+watch(scrollState, async () => {
   if (!roomType.value) return;
+  if (!listRef.value) return;
   if (scrollState.arrivedTop && chunksRes.value.length !== 0 && chunksRes.value[0].lastChunk) {
     debounce(
       async () => {
@@ -89,6 +94,8 @@ watchEffect(async () => {
           [res].concat(chunksRes.value as IMessageRes[]),
           (a) => a.currentChunk,
         );
+        await nextTick();
+        listRef.value?.scrollTo({ index: 20 });
       },
       500,
       { trailing: true },
