@@ -10,7 +10,7 @@ import { roomParse } from '../database/parser.js';
 import { getEM } from '../database/storageProvider.js';
 import needAuth from '../plugins/needAuth.js';
 import configProvider from '../services/configProvider.js';
-import { oicqClient } from '../services/oicqClient.js';
+import { getOicqClient } from '../services/oicqClient.js';
 import passwordSecretUtils from '../utils/passwordSecretUtils.js';
 import corsRouter from './corsRouter.js';
 import messagesRouter from './messagesRouter.js';
@@ -31,6 +31,7 @@ const protectedRouter = async (server: FastifyInstance) => {
   });
   /** 获取单个聊天室信息 */
   server.get<{ Params: { roomId: RoomId } }>('/chatroom/:roomId', async (req, res) => {
+    const oicqClient = getOicqClient();
     if (!oicqClient) return res.status(500).send('oicqClient is not ready');
     const { roomId } = req.params;
     let room = await getEM().findOne(ChatRoom, { roomId });
@@ -54,6 +55,7 @@ const protectedRouter = async (server: FastifyInstance) => {
   });
   /** 获取我的信息 */
   server.get('/myInfo', async (req, res) => {
+    const oicqClient = getOicqClient();
     if (!oicqClient) return res.code(500).send('OicqClient is not ready');
     const user = oicqClient.pickUser(oicqClient.uin);
     const data: IMyInfo.default = {

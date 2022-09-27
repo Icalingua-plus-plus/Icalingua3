@@ -1,7 +1,7 @@
 import { MessageItem } from '@icalingua/types/http/HTTPMessage.js';
 import { Message as OicqMessage } from 'oicq';
 import configProvider from '../services/configProvider.js';
-import { oicqClient } from '../services/oicqClient.js';
+import { getOicqClient } from '../services/oicqClient.js';
 import ChatRoom from './entities/ChatRoom.js';
 import Message from './entities/Message.js';
 
@@ -10,7 +10,7 @@ import Message from './entities/Message.js';
  */
 export const messageParse = (message: Message) => {
   const oicqMessage = OicqMessage.deserialize(message.content, configProvider.config.qid);
-  const avatar = oicqClient?.pickUser(oicqMessage.sender.user_id)?.getAvatarUrl() || null;
+  const avatar = getOicqClient()?.pickUser(oicqMessage.sender.user_id)?.getAvatarUrl() || null;
   return Object.assign(oicqMessage, {
     avatar,
     id: message.id,
@@ -24,13 +24,13 @@ export const messageParse = (message: Message) => {
 export const roomParse = (room: ChatRoom) => {
   const roomId = room.roomId.replace(/.*-/, '');
   if (room.roomId.startsWith('group-')) {
-    const group = oicqClient?.pickGroup(Number(roomId));
+    const group = getOicqClient()?.pickGroup(Number(roomId));
     return { ...room, avatar: group?.getAvatarUrl() || null };
   }
   if (room.roomId.startsWith('discuss-')) {
-    // const discuss = oicqClient.pickDiscuss(Number(roomId));
+    // const discuss = getOicqClient().pickDiscuss(Number(roomId));
     return { ...room, avatar: null };
   }
-  const user = oicqClient?.pickUser(Number(roomId));
+  const user = getOicqClient()?.pickUser(Number(roomId));
   return { ...room, avatar: user?.getAvatarUrl() || null };
 };

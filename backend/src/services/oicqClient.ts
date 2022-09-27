@@ -45,8 +45,10 @@ export const status = {
   loggedIn: false,
 };
 
-// eslint-disable-next-line import/no-mutable-exports
-export let oicqClient: ObservableClient | undefined;
+let oicqClient: ObservableClient | undefined;
+
+/** 获取 oicqClient */
+export const getOicqClient = () => oicqClient;
 
 /** 初始化 oicq 实例并登录 */
 const oicqInit = async () => {

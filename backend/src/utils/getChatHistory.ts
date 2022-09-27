@@ -4,13 +4,14 @@ import { PrivateMessage } from 'oicq';
 import ChatRoom from '../database/entities/ChatRoom.js';
 import Message from '../database/entities/Message.js';
 import { getEM } from '../database/storageProvider.js';
-import { oicqClient } from '../services/oicqClient.js';
+import { getOicqClient } from '../services/oicqClient.js';
 import logger from './logger.js';
 
 /** 按天为单位获取聊天记录，对私聊使用
  * @return 当天的消息，不保证唯一，需要靠数据库去重
  */
 const getChatHistoryByDay = async (roomId: RoomId, chunk: number) => {
+  const oicqClient = getOicqClient();
   if (!oicqClient) throw new Error('oicqClient is not ready');
   const { id } = parseRoomId(roomId);
   const messages: PrivateMessage[] = [];
@@ -31,6 +32,7 @@ const getChatHistoryByDay = async (roomId: RoomId, chunk: number) => {
 
 /** 获取聊天室历史消息，并存入数据库 */
 const getChatHistory = async (roomId: RoomId, opt?: { chunk?: number }) => {
+  const oicqClient = getOicqClient();
   if (!oicqClient) throw new Error('oicqClient is not ready');
   const { roomType, id } = parseRoomId(roomId);
   let messages;

@@ -6,7 +6,7 @@ import { FastifyInstance } from 'fastify';
 import Message from '../database/entities/Message.js';
 import { messageParse } from '../database/parser.js';
 import { getEM } from '../database/storageProvider.js';
-import { oicqClient } from '../services/oicqClient.js';
+import { getOicqClient } from '../services/oicqClient.js';
 import getChatHistory from '../utils/getChatHistory.js';
 import getLatestChunk from '../utils/getLatestChunk.js';
 import logger from '../utils/logger.js';
@@ -121,6 +121,7 @@ const messagesRouter = async (server: FastifyInstance) => {
   );
   /** 获取转发消息 */
   server.get<{ Params: { resId: string } }>('/fwd/:resId', async (req, res) => {
+    const oicqClient = getOicqClient();
     if (!oicqClient) return res.status(500).send('OicqClient is not ready');
     const { resId } = req.params;
     const messages = await oicqClient.getForwardMsg(resId);
