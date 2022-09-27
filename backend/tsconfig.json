@@ -12,9 +12,10 @@
     "esModuleInterop": true,
     "lib": ["esnext"],
     "rootDir": "..",
-    "noEmit": true,
+    "noEmit": false,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "mikro-orm.config.ts"],
   "ts-node": { "esm": true }
