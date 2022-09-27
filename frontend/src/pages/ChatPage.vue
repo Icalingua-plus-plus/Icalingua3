@@ -21,6 +21,7 @@
           :message="item"
           :nickname="item.sender.nickname"
           :uin="item.sender.user_id"
+          class="min-h-20"
         />
       </template>
     </VVirtualList>
@@ -70,6 +71,21 @@ clientSocket.onMessage.subscribe((msg) => {
   if (msg.roomId === roomId.value) newMessages.value.push(msg);
 });
 
+/** 消息列表引用 */
+const listRef = ref<InstanceType<typeof VVirtualList>>();
+
+const fetchOlderMessages = debounce(
+  async () => {
+    const res = await getMessagesByChunk(roomId.value, chunksRes.value[0].lastChunk!);
+    if (res.currentChunk === null) return;
+    chunksRes.value = uniqBy([res].concat(chunksRes.value as IMessageRes[]), (a) => a.currentChunk);
+    await nextTick();
+    listRef.value?.scrollTo({ index: 20 });
+  },
+  500,
+  { trailing: true },
+);
+
 /** 切换聊天室时的逻辑 */
 watchEffect(async () => {
   if (!roomId.value) return;
@@ -77,29 +93,21 @@ watchEffect(async () => {
   chunksRes.value = [res];
   roomInfo.value = roomRes;
   newMessages.value = [];
+  await fetchOlderMessages();
 });
 
-/** 消息列表引用 */
-const listRef = ref<InstanceType<typeof VVirtualList>>();
-
+/** 消息列表滚动到顶时的逻辑 */
 watch(scrollState, async () => {
+  /** 当前页面不是聊天页面时 */
   if (!roomType.value) return;
+  /** 列表还没加载好时 */
   if (!listRef.value) return;
-  if (scrollState.arrivedTop && chunksRes.value.length !== 0 && chunksRes.value[0].lastChunk) {
-    debounce(
-      async () => {
-        const res = await getMessagesByChunk(roomId.value, chunksRes.value[0].lastChunk!);
-        if (res.currentChunk === null) return;
-        chunksRes.value = uniqBy(
-          [res].concat(chunksRes.value as IMessageRes[]),
-          (a) => a.currentChunk,
-        );
-        await nextTick();
-        listRef.value?.scrollTo({ index: 20 });
-      },
-      500,
-      { trailing: true },
-    )();
+  /** 列表还没初始化时 */
+  if (chunksRes.value.length === 0) return;
+  if (!chunksRes.value[0].lastChunk) return;
+  /** 列表滚动到最顶，触发更新 */
+  if (scrollState.arrivedTop) {
+    await fetchOlderMessages();
   }
 });
 </script>

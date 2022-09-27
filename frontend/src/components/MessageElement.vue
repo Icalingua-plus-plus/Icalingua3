@@ -8,7 +8,6 @@
       'items-start': true,
       'justify-start': !myInfo || myInfo?.uin !== uin,
       'justify-end': myInfo?.uin === uin,
-      'min-h-20': true,
       'pt-2': true,
     }"
   >
