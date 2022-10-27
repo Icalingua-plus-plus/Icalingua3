@@ -4,7 +4,7 @@ import { FastifyInstance } from 'fastify';
 /** 绕过 QQ 图片防盗链 */
 const corsRouter = async (server: FastifyInstance) => {
   server.get<{ Querystring: { url: string } }>('/', async (req, res) => {
-    const file = await axios.default.get<Buffer>(req.query.url, {
+    const file = await axios.get<Buffer>(req.query.url, {
       responseType: 'arraybuffer',
       headers: { accept: req.headers.accept! },
       /** 需要不论什么状态都不抛错 */
