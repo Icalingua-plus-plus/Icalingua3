@@ -1,8 +1,10 @@
 import type HTTPForwardMessage from '@icalingua/types/http/HTTPForwardMessage.js';
 import type { IMessageQs, IMessageRes } from '@icalingua/types/http/HTTPMessage.js';
+import type { ISendMsgReq } from '@icalingua/types/http/ISendMsgReq.js';
 import type { RoomId } from '@icalingua/types/RoomId.js';
 import parseRoomId from '@icalingua/utils/parseRoomId.js';
 import { FastifyInstance } from 'fastify';
+import { Group } from 'oicq';
 import Message from '../database/entities/Message.js';
 import { messageParse } from '../database/parser.js';
 import { getEM } from '../database/storageProvider.js';
@@ -130,6 +132,34 @@ const messagesRouter = async (server: FastifyInstance) => {
       return Object.assign(message, { avatar, seq: null });
     });
     return res.send(httpMessages);
+  });
+  /** 发送消息 */
+  server.post<{ Body: ISendMsgReq; Params: { roomId: RoomId } }>('/:roomId', async (req, res) => {
+    const { roomType, id } = parseRoomId(req.params.roomId);
+    const oicqClient = getOicqClient();
+    if (!oicqClient) return res.status(500).send('OicqClient is not ready');
+    let target;
+    switch (roomType) {
+      case 'private': {
+        target = oicqClient.pickUser(id);
+        break;
+      }
+      case 'group': {
+        target = oicqClient.pickGroup(id);
+        break;
+      }
+      default: {
+        target = oicqClient.pickDiscuss(id);
+        break;
+      }
+    }
+    if (!target) return res.status(404).send('Target not found');
+    const sendRes = await target.sendMsg(req.body.elems);
+    if (roomType !== 'group') return res.send('OK');
+    const historyMessages = await (target as Group).getChatHistory(sendRes.seq);
+    const sentMessage = historyMessages.find((message) => message.seq === sendRes.seq);
+    if (!sentMessage) return res.send('OK');
+    return res.send(sentMessage);
   });
 };
 
