@@ -9,7 +9,7 @@ await configProvider.loadConfig();
 if (configProvider.config.qid && !argv.noStartOicq) {
   await oicqInit();
 }
-fastifyServer.listen({ port: 3000 }).catch((e) => {
+fastifyServer.listen({ port: 3000, host: argv.host }).catch((e) => {
   fastifyServer.log.error(e);
   process.exit(1);
 });
