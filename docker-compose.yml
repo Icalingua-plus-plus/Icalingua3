@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  icalingua:
+    image: icalingua
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      CI: true
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data:/usr/src/app/data
