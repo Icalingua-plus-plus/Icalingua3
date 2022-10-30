@@ -1,13 +1,12 @@
 version: '3.4'
 
 services:
-  icalingua:
-    image: icalingua
+  icalingua3:
+    image: ghcr.io/icalingua-plus-plus/icalingua3
+    container_name: icalingua3
     build:
       context: .
       dockerfile: ./Dockerfile
-    environment:
-      CI: true
     ports:
       - 3000:3000
     volumes:
